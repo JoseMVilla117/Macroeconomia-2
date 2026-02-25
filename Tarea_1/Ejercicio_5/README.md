@@ -6,9 +6,9 @@
 
 ## Descripción
 
-Este repositorio contiene el análisis del mercado laboral mexicano para el periodo 2022–2025 utilizando los microdatos de la **Encuesta Nacional de Ocupación y Empleo Nueva Edición (ENOE)** publicada por el INEGI. El ejercicio calcula nueve indicadores trimestrales del mercado de trabajo, desde tasas de desempleo hasta transiciones laborales mediante un panel rotativo.
+Esta carpeta contiene el análisis del mercado laboral mexicano para el periodo 2022–2025 utilizando los microdatos de la **Encuesta Nacional de Ocupación y Empleo Nueva Edición (ENOE)** publicada por el INEGI. El ejercicio calcula algunos indicadores trimestrales del mercado de trabajo, desde tasas de desempleo hasta transiciones laborales mediante un panel rotativo.
 
-El script principal está escrito en **R**, con un bloque en **Julia** para el procesamiento eficiente del panel rotativo (inciso 5i). Esta arquitectura híbrida reduce el uso de memoria de ~2.3 GB a ~90 MB y el tiempo de ejecución de más de una hora a 5–10 minutos, al procesar 15 trimestres consecutivos de microdatos.
+El script principal está escrito en **R**, con un bloque en **Julia** para el procesamiento eficiente del panel rotativo (inciso 5h). Esta arquitectura híbrida reduce el uso de memoria y el tiempo de ejecución al procesar 15 trimestres consecutivos de microdatos.
 
 ---
 

@@ -2,7 +2,6 @@
 # EJERCICIO 5 - ENOE NUEVA (2022-2025) - VERSIÓN OPTIMIZADA PARA MEMORIA
 # Análisis de microdatos de mercado laboral en México
 # ============================================================================
-# Autor: Cortana para Estudiante de Maestría - Colegio de México
 # Fecha: 14 de febrero de 2026
 #
 # DESCRIPCIÓN GENERAL:

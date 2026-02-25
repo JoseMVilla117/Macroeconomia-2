@@ -1,0 +1,1706 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  pdf_document:
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+\begin{center}
+
+% Insertar la imagen (ajusta el nombre y tamaño según necesites)
+\includegraphics[width=10cm]{colmex.jpg}  
+
+\vspace{0.5cm}  
+
+{\Large \textbf{Maestría en Economía}}  
+
+\vspace{0.3cm}
+
+{\Large \textbf{2025-2027}}  
+
+
+\vspace{0.5cm}  
+
+{\Huge \textbf{Macroeconomia II}}
+
+\vspace{0.5cm} 
+
+{\large \textbf{Tarea 1}} 
+
+
+{\LARGE \textbf{Integrantes:}}  
+\vspace{0.3cm}  
+
+{\large Luis Felipe Castillo Garrido}  
+
+{\large Rubén Perea Cervantes}  
+
+{\large José Miguel Villa Ocampo}  
+
+{\large Brenda Evelyn Villegas Pando}  
+
+
+\vspace{0.5cm}  
+
+{\LARGE \textbf{Profesor}}  
+\vspace{0.3cm}  
+
+{\large Carlos Santiago Bazdresch Barquet}  
+
+\vspace{0.5cm}  
+
+{\LARGE \textbf{Fecha}}  
+\vspace{0.3cm}  
+
+{\large FECHA DE ENTREGA*} 
+  
+
+\end{center}
+
+\newpage
+
+## Instrucciones
+
+Realice los siguientes ejercicios en su equipo de trabajo designado. La tarea se califica del **0 al 15** (¡!).
+
+## 1. Resuelva los ejercicios **11.7, 11.8 y 11.9** (5a Ed.).
+
+Realice estos con ayuda de su laboratorista y entregue las soluciones a máquina, utilizando **LaTeX**.\
+**[2 horas, 1 punto cada ejercicio]**
+
+### 11.7. Contratos implícitos bajo información asimétrica (Azariadis y Stiglitz, 1983)
+
+Considere el modelo de la Sección 11.3. Suponga, sin embargo, que solo la firma observa $A$. Además, suponga que solo hay dos valores posibles de $A$, $A_B$ y $A_G$ $(A_B < A_G)$, y que cada uno ocurre con probabilidad $\frac{1}{2}$.
+
+Podemos pensar que el contrato especifica $w$ y $L$ como funciones del anuncio de la firma, y que está sujeto a la restricción de que nunca es interés de la firma anunciar un estado distinto del real; formalmente, el contrato debe ser compatible con incentivos (*incentive-compatible*).
+
+#### **(a)** ¿El contrato eficiente bajo información simétrica derivado en la Sección 11.3 es compatible con incentivos bajo información asimétrica? En particular, si $A$ es $A_B$, ¿está mejor la firma si afirma que $A$ es $A_G$ (de modo que $C$ y $L$ vienen dados por $C_G$ y $L_G$) en lugar de afirmar que es $A_B$? Y si $A$ es $A_G$, ¿está mejor la firma si afirma que es $A_B$ en lugar de $A_G$?
+
+\textcolor{blue}{Respuesta}
+
+Existen dos valores posibles de $A$ ambos con probabilidad $\frac{1}{2}$. Y si $A$ determina los valores de $C_i$ y $L_i$, entontonces los beneficios esperados de la firma son:
+
+$$E[\pi]=\frac{1}{2}(A_B F(L_B) - C_B + A_G F(L_G) - C_G).$$ Y la utilidad esperada de los trabajadores resulta:
+
+$$E[u]=\frac{1}{2}(U(C_B) - V(L_B) + U(C_G) - V(L_G)).$$ Por lo que el problema de optimización de la firma es:
+
+$$\max_{\substack{0 \leq C_i \\ 0 \leq L_i}} \frac{1}{2}(A_B F(L_B) - C_B + A_G F(L_G) - C_G) \quad \text{s.a.}\quad  \frac{1}{2}(U(C_B) - V(L_B) + U(C_G) - V(L_G)) \geq u_0.$$
+
+El lagrangeano análogo al de la Sección 11.3 resulta:
+
+$$\mathcal{L}(C_i,L_i) =\frac{1}{2}(A_B F(L_B) - C_B + A_G F(L_G) - C_G) + \lambda(\frac{1}{2}(U(C_B) - V(L_B) + U(C_G) - V(L_G))-u_0).$$
+
+La condición de primer orden para $L_G$ resulta:
+
+$$\dfrac{\partial \mathcal{L}(C_i,L_i)}{\partial L_G}=\frac{1}{2}(A_G F'(L_G)) + \lambda\frac{1}{2}(-V'(L_G)) = 0.$$
+
+$$\implies \frac{A_G F'(L_G)}{V'(L_G)}=\lambda. $$ Análogamente, por simetría, la condición de primer orden para para $L_B$ resulta:
+
+$$ \frac{A_B F'(L_B)}{V'(L_B)}=\lambda. $$ Como $\lambda$ tiene un valor constante para ambos estados, podemos comparar las condiciones para conocer las magnitudes de $L_G$ y $L_B$.
+
+$$ \frac{A_B F'(L_B)}{V'(L_B)}=\lambda \implies \frac{F'(L_B)}{V'(L_B)}=\frac{\lambda}{A_B} $$ $$ \frac{A_G F'(L_G)}{V'(L_G)}=\lambda \implies \frac{F'(L_G)}{V'(L_G)}=\frac{\lambda}{A_G} $$ $$ A_G > A_B \implies \frac{F'(L_G)}{V'(L_G)}=\frac{\lambda}{A_G} < \frac{\lambda}{A_B}=\frac{F'(L_B)}{V'(L_B)}  $$ Por hipótesis sabemos que $F'(\cdot)>0,\, F''(\cdot)<0$ y que $V'(\cdot)>0,\, V''(\cdot)>0$, entonces $F'(\cdot)$ es decreciente y $V'(\cdot)$ creciente. Por lo que, la función auxiliar $h(\cdot)=\frac{F'(L_i)}{V'(L_i)}$ es decreciente. Por monotonicidad e inyectividad podemos asumir que existe una inversa de ambas funciones $F$ y $V$, y por lo tanto existe inversa de $h$.
+
+$$ h(L_G)=\frac{F'(L_G)}{V'(L_G)}<\frac{F'(L_B)}{V'(L_B)} = h(L_B) $$ $$ \implies h(L_G)^{-1}> h^{-1}(L_B) \implies L_G>L_B$$ De las condiciones de primer orden con respecto a $C_B$ y $C_G$ tenemos que:
+
+$$\dfrac{\partial \mathcal{L}(C_i,L_i)}{\partial C_i}=\frac{1}{2}(-1) + \lambda\frac{1}{2}(U'(C_i)) = 0.$$ $$\implies \lambda = \frac{1}{U'(C_i)} $$ Por el efecto de ser constante $\lambda$:
+
+$$ \implies \frac{1}{U'(C_B)} = \frac{1}{U'(C_G)}$$ Suponiendo la existencia de la inversa de $U'(\cdot)$ por monotonicidad e inyectividad:
+
+$$ U'(C_G) = U'(C_B) \implies C_G=C_B$$ Conociendo que $A_G>A_B$, $L_G>L_B$ y $C_G=C_B$ podemos comparar las ganancias de la firma en distintos casos y ver si el modelo es compatible con incentivos.
+
+**Caso** $\alpha$ firma anuncia $A_B$ pero $A=A_G$
+
+Ingresos de la firma en $A_G$:
+
+$$\pi_{A_G}= A_G F(L_G)-C_G$$
+
+Ganancias de la firma en $\alpha$:
+
+$$\pi_{\alpha}= A_G F(L_B)-C_B$$
+
+Comparación, suponemos que hay compatibilidad de insentivos:
+
+$$\pi_{A_G}= A_G F(L_G)-C_G \geq A_G F(L_B)-C_B= \pi_{\alpha}.$$
+
+$$ \implies  F(L_G) \geq  F(L_B).$$
+
+Porque sabemos que $F'(\cdot)>0$ y mostramos que $L_G>L_B$, podemos afirmar que la firma es incentive compatible, si los tiempos son buenos. $\pi_{A_G} > \pi_{\alpha}$.
+
+**Caso** $\beta$ firma anuncia $A_G$ pero $A=A_B$
+
+Ingresos de la firma en $A_B$:
+
+$$\pi_{A_B}= A_B F(L_B)-C_B$$
+
+Ganancias de la firma en $\beta$:
+
+$$\pi_{\beta}= A_B F(L_G)-C_G$$
+
+Comparación, suponemos que hay compatibilidad de insentivos:
+
+$$\pi_{A_B}= A_B F(L_B)-C_B \geq A_B F(L_G)-C_G = \pi_{\beta}.$$
+
+$$ \implies  F(L_G) \quad \geq !\quad  F(L_B).$$
+
+Esto contradice lo que ya sabemos por lo que la firma no es incentive compatible, si los tiempos son malos. $\pi_{A_B} < \pi_{\beta}$.
+
+#### **(b)** Puede mostrarse que la restricción de que la firma no prefiera afirmar que el estado es malo cuando es bueno no es vinculante, pero que la restricción de que no prefiera afirmar que el estado es bueno cuando es malo sí es vinculante. Plantee el lagrangiano del problema de la firma de elegir $C_G$, $C_B$, $L_G$ y $L_B$ sujeto a las restricciones de que la utilidad esperada de los trabajadores es $u_0$ y de que la firma es indiferente sobre qué estado anunciar cuando $A$ es $A_B$. Encuentre las condiciones de primer orden para $C_G$, $C_B$, $L_G$ y $L_B$.
+
+\textcolor{blue}{Respuesta}
+
+Ahora debemos incluir ambas restricciones **dos restricciones**:
+
+1.  La firma **no prefiere** decir que el estado es *malo* cuando en realidad es *bueno* (**no es vinculante**).
+2.  La firma **no prefiere** decir que el estado es *bueno* cuando en realidad es *malo* (**sí es vinculante**).
+
+La restricción principal es la de la utilidad esperada de los trabajadores: $$ \frac{1}{2}(U(C_G)-V(L_G))+\frac{1}{2}(U(C_B)-V(L_B))=u_0. $$
+
+Y hacemos vinculante la restricción que implica que la firma sea indiferente a anunciar buenos tiempos cuando son malos, que nombramos como caso $\beta$.
+
+$$ A_B f(L_B)-C_B = A_B f(L_G)-C_G. $$ Por lo que el lagrangeano con ambas restricciones resulta:
+
+$$\mathcal{L}=\frac{1}{2}(A_G f(L_G)-C_G + A_B f(L_B)-C_B)
++\lambda(\frac{1}{2}(U(C_G)-V(L_G)+U(C_B)-V(L_B)) - u_0)
++\delta(A_B f(L_B)-C_B -A_B f(L_G)+C_G).$$
+
+**C.P.O. para** $C_G$: $$
+-\frac{1}{2}+\frac{1}{2}\lambda U'(C_G)+\delta=0
+\Rightarrow \frac{1}{2}(\lambda U'(C_G)-1)=-\delta.
+$$
+
+**C.P.O. para** $C_B$: $$
+-\frac{1}{2}+\frac{1}{2}\lambda U'(C_B)-\delta=0
+\Rightarrow \frac{1}{2}(\lambda U'(C_B)-1)=\delta.
+$$
+
+**C.P.O. para** $L_G$: $$
+\frac{1}{2}A_G F'(L_G)-\frac{1}{2}\lambda V'(L_G)-\delta A_B F'(L_G)=0
+\Rightarrow \frac{1}{2}(\frac{A_G F'(L_G)-\lambda V'(L_G)}{A_B F'(L_G)})=\delta.
+$$
+
+**C.P.O. para** $L_B$: $$
+\frac{1}{2}A_B F'(L_B)-\frac{1}{2}\lambda V'(L_B)+\delta A_B F'(L_B)=0
+\Rightarrow \frac{1}{2}(\frac{A_B F'(L_B)-\lambda V'(L_B)}{A_B F'(L_B)})=-\delta.
+$$
+
+A partir de las condiciones de primer orden podemos obtener algunas implicaciones para el consumo. Relacionando únicamente las condicones de primer orden del consumo en cada estado tenemos:
+
+$$\frac{1}{2}(\lambda U'(C_B)-1)=\delta>0
+\implies \lambda U'(C_B)>1,$$
+
+y
+
+$$\frac{1}{2}(\lambda U'(C_G)-1)=-\delta<0
+\implies \lambda U'(C_G)<1.$$
+
+Como $U'(\cdot)$ es decreciente, esto implica:
+
+$$U'(C_B)>U'(C_G)\implies C_B<C_G.$$ Con esto tenemos que para que la firma sea compatible con incentivos, el consumo que pacta con el trabajador debe ser distinto entre los dos periodos.
+
+#### **(c)** Muestre que el producto marginal y la desutilidad marginal del trabajo se igualan en el estado malo; es decir, $A_B F'(L_B)=\frac{V'(L_B)}{U'(C_B)}.$
+
+\textcolor{blue}{Respuesta}
+
+Resultado de las condiciones de primer orden del modelo base, sabemos que el producto margial y la desutilidad marginal del trabajo son iguales en el mal estado. Es decir: $$ A_B F'(L_B)=\frac{V'(L_B)}{U'(C_B)}.$$
+
+Retomamos nuestras CPO respecto a $L_B$ y $C_B$:
+
+$$ \lambda U'(C_B)=\frac{\lambda V'(L_B)}{A_B F'(L_B)}
+\implies A_B F'(l_B)=\frac{V'(L_B)}{U'(C_B)}.$$
+
+Con este resultado tenemos que el consumo en el estado malo esta dada por la productividad marginal del trabajo en ese estado.
+
+#### **(d)** Muestre que hay “sobreempleo” (*overemployment*) en el estado bueno; esto es, $A_G F'(L_G)<\frac{V'(L_G)}{U'(C_G)}.$
+
+\textcolor{blue}{Respuesta}
+
+Por hipótesis sabemos que: $$A_G F'(L_G)<\frac{V'(L_G)}{U'(C_G)}.$$
+
+Vamos sobre las condiciones de primer orden en el estado bueno:
+
+$$\frac{1}{2}(\lambda U'(C_G)-1)=-\delta
+\Rightarrow \lambda U'(C_G)=1-2\delta.$$
+
+Y
+
+$$\frac{1}{2}(\frac{A_G F'(L_G)-\lambda V'(L_G)}{A_B F'(L_G)})=\delta \implies \lambda V'(L_G)=(A_G - 2 \delta A_B)F'(LG).$$
+
+Entonces $\frac{V'(LG)}{U'(L_G)}= \frac{\lambda V'(LG)}{\lambda U'(L_G)}$: $$
+\implies \frac{V'(LG)}{U'(L_G)} = \frac{(A_G - 2 \delta A_B)F'(LG)}{1-2\delta}.
+$$ el objetivo es mostrar: $$
+A_G F'(L_G)<\frac{V'(L_G)}{U'(C_G)}. \implies A_G F'(L_G)< \frac{(A_G - 2 \delta A_B)F'(LG)}{1-2\delta}.
+$$ $$  A_G F'(L_G) - 2\delta A_G F'(L_G) < A_G F'(L_G) - 2 \delta A_BF'(LG) $$ Y como $A_G>A_B$, concluimos: $$A_G F'(L_G)<\frac{V'(L_G)}{U'(C_G)}.$$
+
+#### **(e)** ¿Este modelo es útil para entender el alto nivel de desempleo promedio? ¿Es útil para entender el gran tamaño de las fluctuaciones del empleo?
+
+\textcolor{blue}{Respuesta}
+
+Este modelo puede ser útil porque, con salvedades, explica por qué los salarios se mantienen en su mayoría constantes durante las fluctuaciones, o al menos.
+
+### 11.8. Un modelo *insider–outsider*
+
+Considere la siguiente variante del modelo de las ecuaciones (11.39)–(11.42). Las ganancias de la firma son $\pi = A F(L_I + L_O) - w_I L_I - w_O L_O,$ donde $L_I$ y $L_O$ son, respectivamente, el número de insiders y outsiders que contrata la firma, y $w_I$ y $w_O$ son sus salarios. Siempre se cumple que $L_I=\bar L_I$, y por lo tanto la utilidad de los insiders en el estado $i$ es simplemente $u_{Ii}=U(w_{Ii}),$ con $U'(\cdot)>0$ y $U''(\cdot)<0$. Capturamos la idea de que los salarios de insiders y outsiders no pueden fijarse independientemente suponiendo que $w_{Oi}=R\,w_{Ii}, \quad \text{donde } 0<R\le 1.$
+
+##### **(a)** Piense en las variables de decisión de la firma como $w_I$ y $L_O$ en cada estado, con $w_{Oi}$ dado por $w_{Oi}=R w_{Ii}$. Plantee el lagrangiano (análogo a (11.43)) para el problema de la firma de maximizar sus ganancias esperadas sujeto a la restricción de que la utilidad esperada de los insiders sea $u_0$.
+
+\textcolor{blue}{Respuesta}
+
+Las variables de desición son $w_I$ and $l_o$. Como sabemos que todo el salario se destina al consumo $w_I=C_I$. Entonces $U(C_I)=U(w_I)$. Pero mantendremos $w_I$ con el propósito de claridad. La firma quiere maximizar sus ganancias, sujeta a la restricción, de que los insiders reciban por lo menos $u_0$ de utilidad por su trabajo.
+
+$$
+\max_{w_I,\,L_o}\sum_{i=1}^K p_i[A_i f(L_i)-w_{Ii}L_i-w_{Oi}L_{oi}]
+\quad \text{s.a.}\quad \sum_{i=1}^K p_i(U(w_{Ii})-V(L_i))=u_0.
+$$
+
+Reemplazando $w_{Oi}=R w_{Ii}$ y $L_{Ii}=\bar L_I$.
+
+$$ \mathcal{L}=\sum_{i=1}^K p_i[A_i f(\bar L_I+L_{oi})-w_{Ii}(\bar L_I+R L_{oi})]
++\lambda(\sum_{i=1}^K p_i U(w_{Ii})-u_0).$$
+
+##### **(b)** ¿Cuál es la condición de primer orden para $L_{Oi}$? ¿La firma elige el empleo de modo que el producto marginal del trabajo y el salario real sean iguales en todos los estados? (Suponga que siempre hay una solución interior para $L_{Oi}$.)
+
+\textcolor{blue}{Respuesta}
+
+$$ \mathcal{L}=\sum_{i=1}^K p_i[A_i f(\bar L_I+L_{oi})-w_{Ii}(\bar L_I+R L_{oi})]
++\lambda(\sum_{i=1}^K p_i U(w_{Ii})-u_0).$$
+
+C.P.O. $L_{oi}$: $$\frac{\partial \mathcal{L}}{\partial L_{oi}}
+=\frac{\partial}{\partial L_{oi}}(\sum_{i=1}^K p_i[A_i f(\bar L_I+L_{oi})-w_{Ii}\bar L_I-Rw_{Ii}L_{oi}]
++\lambda(\sum_{i=1}^K p_i U(w_{Ii})-u_0))$$
+
+$$= p_i(A_i f'(\bar L_I+L_{oi})\frac{\partial}{\partial L_{oi}}(\bar L_I+L_{oi})-R w_{Ii})+0=0$$
+
+$$\Rightarrow p_i(A_i f'(\bar L_I+L_{oi})-R w_{Ii})=0
+\Rightarrow A_i f'(\bar L_I+L_{oi})=R w_{Ii}.$$
+
+La implicación para el salario real de los outsiders es que éste, igualará la productividad marginal de la empresa. Es decir su salario real iguala a la productividad para cada estado de la economía.
+
+##### **(c)** ¿Cuál es la condición de primer orden para $w_{Ii}$? Cuando $L_{Oi}$ es mayor, ¿$w_{Ii}$ es mayor, menor, o no cambia? (Siga suponiendo que siempre hay una solución interior para $L_{Oi}$.)
+
+\textcolor{blue}{Respuesta}
+
+La condición de primer orden de $w_{Ii}$ en el $i$-estado: $$
+\frac{\partial \mathcal{L}}{\partial w_{Ii}}
+=\frac{\partial}{\partial w_{Ii}}(\sum_{i=1}^K p_i[A_i f(\bar L_I+L_{oi})-w_{Ii}\bar L_I-Rw_{Ii}L_{oi}]+\lambda(\sum_{i=1}^K p_i U(w_{Ii})-u_0))
+$$
+
+$$
+=p_i(-\bar L_I-RL_{oi})+\lambda p_i U'(w_{Ii})=0
+\Rightarrow p_i((-\bar L_I-RL_{oi})+\lambda U'(w_{Ii}))=0,
+$$ $$\implies \lambda=\frac{\bar L_I+R L_{oi}}{U'(w_{Ii})}$$
+
+Como $\lambda$ es constante para cualquier estado de la economía, si $L_{oi}$ aumenta, el numerador se hace más grande. Para mantener la proporción el denominador debe aumentar. Como $U'(\cdot)$ es decreciente, $U''(\cdot)<0$, su argumento, $w_{Ii}$ debe disminuir.
+
+Lo que implica que si $L_{oi}$ aumenta $w_{Ii}$ disminuye. O más claro: Si los insiders aumentan su salario (dado que su cantidad es fija) se contrata menos outsiders. Para que se contraten más outsiders el salario de los insiders debe bajar.
+
+### 11.9. El modelo de Harris–Todaro (1970)
+
+Suponga que hay **dos sectores**. Los empleos en el sector primario pagan $w_p$; los empleos en el sector secundario pagan $w_s$. Cada trabajador decide en qué sector estar. Todos los trabajadores que eligen el sector secundario obtienen un empleo. Pero existe un número fijo $N_p$ de empleos del sector primario. Estos empleos se asignan aleatoriamente entre los trabajadores que eligen el sector primario. Los trabajadores del sector primario que no obtienen un empleo quedan desempleados y reciben un beneficio por desempleo $b$. Los trabajadores son neutrales al riesgo y no hay desutilidad por trabajar. Por lo tanto, la utilidad esperada de un trabajador del sector primario es \$ q w_p + (1-q)b,\$ donde $q$ es la probabilidad de que un trabajador del sector primario obtenga un empleo. Suponga que $b<w_s<w_p$, y que $\frac{N_p}{N}<\frac{w_s-b}{w_p-b}.$
+
+##### **(a)** ¿Cuál es el desempleo de equilibrio como función de $w_p$, $w_s$, $N_p$, $b$ y el tamaño de la fuerza laboral $N$?
+
+\textcolor{blue}{Respuesta}
+
+En equilibrio los trabajadores deben ser indiferentes entre obtener trabajo en un sector u otro.
+
+Que los trabajadores sean neutrales al riesgo implica que su utilidad esperada es lineal:
+
+$$U=q\,u(w_p)+(1-q)\,u(b)=q w_p+(1-q)b.$$
+
+Para que exista equilibrio los trabajadores deben ser indiferentes entre trabajar en un sector y otro. La utilidad esperada del sector 2 es constante e igual al salario $w_s$.
+
+$$ \Rightarrow U(s1)=U(s2),\quad q\,u(w_p)+(1-q)\,u(b)=u(w_s)$$
+
+$$\implies q w_p+(1-q)b=w_s \Rightarrow q w_p+(1-q)b-w_s=0.$$
+
+Dado que los trabajos son asignados de manera aleatoria podemos definir a la probabilidad $q$ como:
+
+$$q=\frac{N_p}{L_p},$$
+
+donde $L_p$ representa la cantidad de trabajadores que desan trabajar en el sector primario. Si despejamos a $q$ de nuestra primer ecuación tenemos:
+
+$$
+\Rightarrow q=\frac{w_s-b}{w_p-b}=\frac{N_p}{L_p}
+\Rightarrow N_p=(\frac{w_s-b}{w_p-b})L_p.
+$$
+
+Debido a que únicamente existe desempleo en el primer sector, tenemos que:
+
+$$
+U = L_p-(\frac{w_s-b}{w_p-b})L_p \quad \text{(Desempleo de equilibrio)}.
+$$
+
+Sustituyendo la cantidad de trabajadores que desean trabajar en el sector primario $L_p=\dfrac{w_p-b}{w_s-b}N_p$:
+
+$$ U^* = N_p(\frac{w_p-b}{w_s-b})-N_p
+= (\frac{w_p-b}{w_s-b}-1)N_p.$$
+
+##### ** (b)** ¿Cómo afecta un aumento en $N_p$ al desempleo? Explique intuitivamente por qué, aunque el desempleo toma la forma de trabajadores esperando empleos del sector primario, aumentar el número de esos empleos puede aumentar el desempleo.
+
+\textcolor{blue}{Respuesta}
+
+Derivamos al desempleo de equilibrio con respecto a $N_p$:
+
+$$
+\frac{\partial U}{\partial N_p}
+=\frac{\partial}{\partial N_p}\left(\frac{w_p-b}{w_s-b}-1\right)
+=\frac{w_p-b}{w_s-b}-1
+\Rightarrow \frac{\partial U}{\partial N_p}>0 \text{ si } w_p>w_s
+$$
+
+Como sabemos el salario del sector primario es superior al del sector secundario, entonces al aumentar los puestos del sector primario aumenta el desempleo. Esto porque aumenta más que proporcionalmente el número de trabajadores que busca entrar al sector primario una vez se abren vacantes. Entonces aunque se abran más, el desempleo aumenta.
+
+#####  **(c)** ¿Cuáles son los efectos de un aumento en el nivel de beneficios por desempleo?
+
+\textcolor{blue}{Respuesta}
+
+Nuevamente derivamos, para conocer la dirección del cambio del desempleo de equilibrio cuando aumenta $b$.
+
+$$
+\frac{\partial U}{\partial b}
+=\frac{\partial}{\partial b}(\frac{w_p-b}{w_s-b}-1)
+=\frac{\partial}{\partial b}(\frac{w_p-b-w_s+b}{w_s-b})
+=\frac{\partial}{\partial b}(\frac{w_p-w_s}{w_s-b})
+$$
+
+$$
+=(\frac{\frac{\partial}{\partial b}(w_p-w_s)(w_s-b)-(w_p-w_s)\frac{\partial}{\partial b}(w_s-b)}{(w_s-b)^2})
+$$
+
+$$
+=\frac{0-(w_p-w_s)(-1)}{(w_s-b)^2}
+=\frac{w_p-w_s}{(w_s-b)^2},\qquad w_p>w_s \Rightarrow \frac{\partial U}{\partial b}>0.
+$$
+
+Por lo tanto, el desempleo de equilibrio aumenta cuando $b$ se incrementa. Esto tiene sentido ya que si aumenta el seguro de desempleo se está más dispuesto a apostar por entrar al sector primario ya que la pérdida de salario es menor. La diferencia entre lo que se gana en el sector secundario y desempleado disminuye.
+
+##  2. Estudie el mercado laboral en México siguiendo estos pasos: **[2 horas, 0.5 puntos cada inciso]**. Documente su trabajo para que se pueda replicar.
+
+#### 1. Obtenga del **INEGI** una serie anual del **producto interno bruto** en términos reales, genere la serie de su **tasa de cambio anual**, calcule su **volatilidad**. *(Serie 1)*
+
+\textcolor{blue}{Respuesta}\
+
+#### 2. Obtenga del **INEGI** una serie anual de los **salarios (en términos reales)** en México, genere una serie de su **tasa de cambio anual**, calcule la **volatilidad** de dicha serie. *(Serie 2)*
+
+\textcolor{blue}{Respuesta}\
+
+#### 3. Obtenga del **INEGI** una serie anual de **desocupación** en México, genere una serie de su **tasa de cambio anual**, calcule la **volatilidad** de dicha serie. *(Serie 3)*
+
+\textcolor{blue}{Respuesta}\
+
+#### 4. Obtenga del **INEGI** una serie anual de la **participación laboral** en México, genere una serie de su **tasa de cambio anual**, calcule la **volatilidad** de dicha serie. *(Serie 4)*
+
+\textcolor{blue}{Respuesta}\
+
+#### 5. Obtenga del **INEGI** una serie anual de la **tasa de ocupación en el sector informal** en México, genere una serie de su **tasa de cambio anual**, calcule la **volatilidad** de dicha serie. *(Serie 5)*
+
+\textcolor{blue}{Respuesta}\
+
+#### 6. Obtenga del **INEGI** una serie anual de la **tasa de informalidad laboral** en México, genere una serie de su **tasa de cambio anual**, calcule la **volatilidad** de dicha serie. *(Serie 6)*
+
+\textcolor{blue}{Respuesta}\
+
+#### 7. Grafique las series (las de **tasas de cambios**) de forma que se puedan comparar.
+
+\textcolor{blue}{Respuesta}\
+
+#### 8. Calcule la **matriz de varianzas y covarianzas** entre todas las series (en su versión en tasa de cambios).
+
+\textcolor{blue}{Respuesta}\
+
+#### 9. Explique en qué medida los **niveles** y las **covarianzas** de las series son o no consistentes con los **hechos estilizados** que se discutieron en clase para **EEUU**.
+
+Interpreta las \*\*correlaciones\*\* de la \*\*tasa de ocupación en el sector informal\*\* y la \*\*tasa de informalidad laboral\*\* con las demás series.
+
+\textcolor{blue}{Respuesta}\
+
+## 3. Contraste un modelo trivial de la determinación del salario con los datos por medio de los siguientes pasos: **[2 horas, 0.5 puntos cada inciso]**.
+
+Por favor documente su trabajo para que se pueda replicar.
+
+#### 1. Obtenga una serie del **PIB** $Y_t$ de la economía.
+
+\textcolor{blue}{Respuesta}\
+
+#### 2. Obtenga una serie del **capital** $K_t$ de la economía ("Índice de Volumen físico acumulado").
+
+\textcolor{blue}{Respuesta}\
+
+#### 3. Obtenga una serie del **empleo** $L_t$ de la economía.
+
+\textcolor{blue}{Respuesta}\
+
+#### 4. Cree una serie de la **productividad** $A_t$ de la economía a partir de asumir una función de producción
+
+$Y_t = A_t F(K,L)$, con $F(K,L)=K^{0.7}L^{0.3}$.
+
+\textcolor{blue}{Respuesta}\
+
+#### 5. Cree una serie **contrafactual** del salario que se debió de haber observado si el salario fuera el **ingreso marginal del trabajo** $A_t F_L(K_t, L_t)$.
+
+\textcolor{blue}{Respuesta}\
+
+#### 6. Compare el salario observado con el salario contrafactual a la luz de los hechos estilizados y las teorías descritas en clase.
+
+\textcolor{blue}{Respuesta}\
+
+#### 7. Compare el salario promedio según el **IMSS** con el salario promedio según la **ENOE** del INEGI.
+
+\textcolor{blue}{Respuesta}\
+
+#### 8. Interprete.
+
+\textcolor{blue}{Respuesta}\
+
+## 4. Desarrolle su intuición cuantitativa sobre la informalidad laboral en México siguiendo estos pasos: **[3 horas, 0.5 puntos cada inciso]**.
+
+Por favor documente su trabajo para que se pueda replicar.
+
+#### 1. Obtenga la **"Matriz Hussmans"** para México, del INEGI, para algún trimestre de 2024.
+
+\textcolor{blue}{Respuesta}\
+
+#### 2. A partir de la tabla, averigüe qué proporción de los trabajadores trabaja en el **"sector informal"** de la economía.
+
+\textcolor{blue}{Respuesta}\
+
+#### 3. A partir de la tabla, averigüe qué proporción de los trabajadores del **sector formal** son **informales**.
+
+\textcolor{blue}{Respuesta}\
+
+#### 4. Averigüe con datos del INEGI cuáles son las **industrias formales** con mayor proporción de trabajadores informales y los **estados de la república** con mayor proporción de trabajadores informales.
+
+\textcolor{blue}{Respuesta}\
+
+#### 5. Obtenga una medida de **salario por industria** y grafique el nivel de **informalidad** contra el salario.
+
+\textcolor{blue}{Respuesta}\
+
+#### 6. Obtenga una medida de la **edad promedio** de los trabajadores por industria y grafique la edad contra el salario.
+
+\textcolor{blue}{Respuesta}\
+
+#### 7. Obtenga una medida de la **composición por género** de los trabajadores por industria y grafique dicha composición contra el salario.
+
+\textcolor{blue}{Respuesta}\
+
+#### 8. Enuncie algunas conclusiones tentativas sobre los resultados que obtuvo, relacionándolas con los modelos discutidos en clase.
+
+\textcolor{blue}{Respuesta}\
+
+## 5. Practique trabajar con datos laborales de México siguiendo estos pasos: **[3 horas, 0.5 puntos cada inciso]**.
+
+Por favor documente su trabajo para que se pueda replicar.
+
+\textcolor{blue}{Respuesta}\
+
+### 1. Descargue los micro-datos de la **ENOE**, correspondientes a los cuatro trimestres de **2022, 2023 y 2024**.
+
+La ENOE la descargamos del sitio oficial de INEGI:
+
+-   **URL:** <https://www.inegi.org.mx/programas/enoe/15ymas/>
+-   **Formato:** Archivos CSV comprimidos (ZIP) por trimestre
+-   **Estructura:** De cada trimestre utilizamos únicamente los siguientes 2 archivos:
+    -   `SDEMT.csv`: Cuestionario sociodemográfico (identificación, edad, sexo, estado laboral)
+    -   `COE1T.csv`: Cuestionario de ocupación y empleo (ingresos, tamaño de empresa, búsqueda)
+
+##### Estructura esperada de directorios
+
+Los microdatos de la ENOE deben organizarse en carpetas trimestrales con la nomenclatura oficial de INEGI. Para eso hay que descomprimir en una carpeta.
+
+```         
+RUTA_BASE/
+├── enoe_n_2022_trim1_csv/
+│   ├── SDEMT202201.csv
+│   └── COE1T202201.csv
+├── enoe_n_2022_trim2_csv/
+│   ├── SDEMT202202.csv
+│   └── COE1T202202.csv
+├── ...
+└── enoe_n_2025_trim3_csv/
+    ├── SDEMT202503.csv
+    └── COE1T202503.csv
+```
+
+###### Arquitectura del código
+
+El presente análisis se implementa mediante una arquitectura híbrida R-Julia.**R** se utiliza como lenguaje principal para la carga, limpieza, transformación de datos y generación de resultados (incisos 5a-5g).**Julia** se emplea específicamente para el procesamiento eficiente del panel rotativo y el cálculo de la matriz de transiciones entre estados de empleo y desempleo (inciso 5i), por su capacidad de optimizando el manejo de grandes volúmenes de datos longitudinales.
+
+*Nota:* Julia no es estrictamente necesaria si solo se ejecutan los incisos 5a-5h; sin embargo, el inciso 5h (panel rotativo) requiere su instalación para el cálculo de transiciones laborales.
+
+#### Configuración inicial
+
+##### Paquetes principales
+
+-   `JuliaCall` ($\geq$ 0.17.0): Interfaz R-Julia para el procesamiento del panel longitudinal. Permite la invocación de funciones Julia desde R sin necesidad de archivos intermedios.
+
+-   `kableExtra` ($\geq$ 1.4.0): Crea tablas HTML o LaTeX de 'knitr'. Es un generador de tablas ligero, proveniente de 'knitr', permite crear tablas complejas y personalizar estilos.
+
+-   `tidyverse` ($\geq$ 1.3.0): Suite integrada de paquetes para ciencia de datos que incluye:
+
+    -   `dplyr`: Manipulación y transformación de datos
+    -   `ggplot2`: Generación de gráficas
+    -   `tidyr`: Reestructuración de datos
+    -   `readr`: Lectura eficiente de archivos CSV
+    -   `stringr`: Manipulación de cadenas de texto
+    -   `purrr`: Programación funcional
+
+De Julia se utiliza únicamente el paquete `DataFrames`, que viene incluido en la distribución estándar de Julia ($\geq$ 1.6), por lo que no requiere instalación adicional.
+
+```{r librerias, message=FALSE, warning=FALSE}
+# ============================================================================
+# LIBRERÍAS REQUERIDAS EN R
+# ============================================================================
+# Instalar si no están disponibles:
+# install.packages(c("tidyverse", "JuliaCall"))
+
+library(JuliaCall)      # Para procesamiento eficiente del panel (inciso 5i)
+library(tidyverse)      # Suite completa: dplyr, ggplot2, tidyr, etc.
+library(kableExtra)     # Tablas con formato HTML/LaTeX
+
+```
+
+#### Creación de la Base de Datos
+
+```{r configuracion}
+# ============================================================================
+# CONFIGURACIÓN DE RUTAS Y TRIMESTRES
+# ============================================================================
+
+# RUTA BASE (AJUSTAR SEGÚN TU SISTEMA)
+# Windows: usa barras diagonales / o dobles \\
+# macOS/Linux: usa barras diagonales /
+RUTA_BASE <- "C:/Users/spart/Desktop/Datos Tarea Macro 1"
+
+# VERIFICAR QUE LA RUTA EXISTA
+if (!dir.exists(RUTA_BASE)) {
+  stop(sprintf("ERROR: La ruta base no existe: %s\nPor favor ajustar RUTA_BASE", 
+               RUTA_BASE))
+}
+
+# Carpetas de cada trimestre (nombres exactos de INEGI)
+# Formato: enoe_n_YYYY_trimN_csv
+carpetas_trimestres <- c(
+  # 2022
+  "enoe_n_2022_trim1_csv",
+  "enoe_n_2022_trim2_csv",
+  "enoe_n_2022_trim3_csv",
+  "enoe_n_2022_trim4_csv",
+  
+  # 2023
+  "enoe_n_2023_trim1_csv",
+  "enoe_n_2023_trim2_csv",
+  "enoe_n_2023_trim3_csv",
+  "enoe_n_2023_trim4_csv",
+  
+  # 2024
+  "enoe_n_2024_trim1_csv",
+  "enoe_n_2024_trim2_csv",
+  "enoe_n_2024_trim3_csv",
+  "enoe_n_2024_trim4_csv",
+  
+  # 2025
+  "enoe_n_2025_trim1_csv",
+  "enoe_n_2025_trim2_csv",
+  "enoe_n_2025_trim3_csv"
+)
+
+# Mapeo de carpetas a año y trimestre
+info_trimestres <- tibble(
+  carpeta = carpetas_trimestres,
+  anio = c(rep(2022, 4), rep(2023, 4), rep(2024, 4), rep(2025, 3)),
+  trimestre = c(1:4, 1:4, 1:4, 1:3)
+)
+
+```
+
+##### Variables seleccionadas
+
+Para optimizar memoria, sólo cargamos las variables necesarias para el Ejercicio 5:
+
+| Variable | Uso en el ejercicio |
+|-------------------------|-----------------------------------------------|
+| `cd_a, ent, upm, ...` | Identificación única de individuos (panel longitudinal 5i) |
+| `mes_cal` | Resolver duplicados dentro del trimestre (seleccionar observación más reciente) |
+| `eda, sex` | Ingresos por edad (5g), distribución por sexo (5h) |
+| `clase2` | Clasificación laboral: desempleo (5b), subempleo (5c), disponibilidad (5d), transiciones (5i) |
+| `sub_o` | Subocupación (5c) |
+| `fac_tri` | **Ponderador trimestral** (Importante: expande muestra a población) |
+| `ingocup` | Ingresos por edad (5g) |
+| `busqueda` | Búsqueda de otro empleo (5f) |
+| `ambito2` | Tamaño de empresa (5e) |
+| `r_def, c_res` | Filtros de calidad (entrevistas completas, residentes válidos) |
+
+```{r variables-clave}
+# ============================================================================
+# VARIABLES A CONSERVAR (OPTIMIZADA)
+# ============================================================================
+
+# Lista de variables clave del Ejercicio 5
+# NOTA: La ENOE completa tiene ~200 variables; aquí seleccionamos ~20
+vars_clave <- c(
+  # ---- CLAVE PRIMARIA (para merge SDEMT-COE1T y panel longitudinal) ----
+  "cd_a",        # Código de área
+  "ent",         # Entidad federativa
+  "upm",         # Unidad primaria de muestreo
+  "con",         # Consecutivo de vivienda
+  "d_sem",       # Domicilio seleccionado
+  "n_pro_viv",   # Número de vivienda
+  "v_sel",       # Vivienda seleccionada
+  "n_hog",       # Número de hogar
+  "h_mud",       # Hogar mudado
+  "n_ren",       # Número de renglón (persona)
+  "tipo",        # Tipo de entrevista
+  "mes_cal",     # Mes calendario (para resolver duplicados)
+  
+  # ---- VARIABLES SOCIODEMOGRÁFICAS ----
+  "eda",         # Edad en años cumplidos
+  "sex",         # Sexo (1=Hombre, 2=Mujer)
+  
+  # ---- VARIABLES LABORALES ----
+  "clase2",      # Clasificación laboral: 1=Ocupado, 2=Desocupado, 3=PNEA disponible, 4=PNEA no disponible
+  "sub_o",       # Subocupación (1=Subocupado)
+  "dispo",       # Disponibilidad para trabajar
+  "fac_tri",     # Factor de expansión trimestral (PONDERADOR)
+  "ingocup",     # Ingreso por ocupación principal
+  "busqueda",    # Búsqueda de otro empleo (1=Sí busca)
+  
+  # ---- UNIDAD ECONÓMICA / EMPRESA (COE1T) ----
+  "ambito2",     # Ámbito/tamaño de la unidad económica (2-3=Micro, 4=Pequeña, 5=Mediana, 6=Grande, 7=Gobierno)
+  "p4a",         # Pregunta auxiliar sobre el giro de la empresa
+  
+  # ---- METADATOS (para filtros) ----
+  "r_def",       # Resultado definitivo (0/00 = entrevista completa)
+  "c_res"        # Condición de residencia (1=residente, 3=ausente temporal)
+)
+
+```
+
+##### Función auxiliar 1: Normalizar nombres de columnas
+
+Definimos una función llamada `normalizar_columnas`. Esto porque según la estructura de la base de datos de la ENOE, se incluye el prefijo `cve_` en los nombres de algunas variables, que no aparecen en los archivos `.csv`. Por lo que para evitar pérdida de información por la diferencia en nomenclatura, usamos esta para uniformidad.
+
+```{r funcion-normalizar}
+# ============================================================================
+# FUNCIÓN: NORMALIZAR NOMBRES DE COLUMNAS
+# ============================================================================
+
+normalizar_columnas <- function(df) {
+  # Elimina el prefijo "cve_" de los nombres de columnas si existe
+  # Ejemplo: "cve_ent" -> "ent"
+  names(df) <- str_replace(names(df), "^cve_", "")
+  return(df)
+}
+```
+
+##### Función auxiliar 2: Procesamiento de un trimestres
+
+Definimos una función llamada `procesar_trimestre_enoen_optimizado` que toma como argumentos la ruta de ka carpeta de un trimestre y el año y número de trimestre correspondientes, y devuelve un tibble que contiene únicamente la población válida. Esta es la **función principal** que carga, limpia y junta los datos de un trimestre.
+
+Internamente hace cinco cosas en secuencia: primero detecta los dos archivos CSV del trimestre (SDEMT y COE1T); luego lee únicamente las columnas que se necesitan para el ejercicio, evitando cargar todo el archivo en memoria; después filtra la muestra para quedarse solo con entrevistas completas, residentes y personas de 15 años o más; enseguida cruza ambos archivos mediante un left join usando la clave primaria de 12 variables que debería identificar a cada persona en la encuesta; y finalmente convierte las variables a sus tipos correctos (numérico, carácter) y agrega columnas de año, trimestre y período para poder apilar todos los trimestres en una sola base después. A lo largo del proceso va liberando memoria con rm() y gc() cada vez que un objeto intermedio ya no se necesita.
+
+```{r funcion-procesar-trimestre, echo = FALSE}
+# ============================================================================
+# FUNCIÓN: PROCESAR UN TRIMESTRE (OPTIMIZADO PARA MEMORIA)
+# ============================================================================
+
+procesar_trimestre_enoen_optimizado <- function(ruta_carpeta, anio, trimestre) {
+  
+  # --- PASO 1: Detectar archivos SDEMT y COE1T ---
+  archivos <- list.files(ruta_carpeta, pattern = "\\.csv$", full.names = TRUE)
+  
+  sdemt_file <- str_subset(archivos, "SDEMT")
+  coe1t_file <- str_subset(archivos, "COE1T")
+  
+  # Validar que existan ambos archivos
+  if (length(sdemt_file) == 0 || length(coe1t_file) == 0) {
+    warning(sprintf("Archivos faltantes en %s. Saltando...", ruta_carpeta))
+    return(NULL)
+  }
+  
+  
+  # --- PASO 2: CARGA SELECTIVA DE COLUMNAS ---
+
+  # 2.1) Detectar columnas disponibles (solo nombres, sin cargar datos)
+  sdemt_cols_all <- names(read_csv(sdemt_file, n_max = 0, col_types = cols(.default = "c")))
+  coe1t_cols_all <- names(read_csv(coe1t_file, n_max = 0, col_types = cols(.default = "c")))
+  
+  # 2.2) Normalizar nombres (minúsculas, sin prefijos cve_)
+  sdemt_cols_norm <- str_replace(tolower(sdemt_cols_all), "^cve_", "")
+  coe1t_cols_norm <- str_replace(tolower(coe1t_cols_all), "^cve_", "")
+  
+  # 2.3) Seleccionar solo las columnas que necesitamos (intersección)
+  vars_sdemt <- intersect(vars_clave, sdemt_cols_norm)
+  vars_coe1t <- intersect(vars_clave, coe1t_cols_norm)
+  
+  # 2.4) Mapear de vuelta a nombres originales (con mayúsculas/prefijos)
+  sdemt_cols_select <- sdemt_cols_all[match(vars_sdemt, sdemt_cols_norm)]
+  coe1t_cols_select <- coe1t_cols_all[match(vars_coe1t, coe1t_cols_norm)]
+  
+  # 2.5) CARGAR SOLO LAS COLUMNAS SELECCIONADAS (optimización de memoria)
+  sdemt_raw <- read_csv(
+    sdemt_file,
+    col_select = all_of(sdemt_cols_select),
+    col_types = cols(.default = "c"),           # Cargar todo como texto
+    locale = locale(encoding = "latin1")        # Encoding de INEGI
+  )
+  
+  coe1t_raw <- read_csv(
+    coe1t_file,
+    col_select = all_of(coe1t_cols_select),
+    col_types = cols(.default = "c"),
+    locale = locale(encoding = "latin1")
+  )
+  
+  # 2.6) Normalizar nombres de columnas
+  names(sdemt_raw) <- str_replace(tolower(names(sdemt_raw)), "^cve_", "")
+  names(coe1t_raw) <- str_replace(tolower(names(coe1t_raw)), "^cve_", "")
+  
+  
+  # --- PASO 3: FILTRAR POBLACIÓN VÁLIDA (SDEMT) ---
+
+  # Filtros de calidad recomendados por INEGI:
+  # - r_def %in% c("0", "00"): entrevista completa
+  # - c_res %in% c("1", "3"): residente habitual o ausente temporal
+  # - eda >= 15: población en edad de trabajar (PET)
+  sdemt_clean <- sdemt_raw %>%
+    filter(
+      r_def %in% c("0", "00"),
+      c_res %in% c("1", "3"),
+      as.numeric(eda) >= 15
+    ) %>%
+    select(-r_def, -c_res)  # Ya no necesitamos estas columnas
+  
+  # Liberar memoria (sdemt_raw ya no se usa)
+  rm(sdemt_raw)
+  gc(verbose = FALSE)
+  
+
+  if (nrow(sdemt_clean) == 0) {
+    warning("  No hay población válida en este trimestre")
+    return(NULL)
+  }
+  
+  # --- PASO 4: MERGE SDEMT-COE1T (por clave primaria) ---
+
+  # 4.1) Definir columnas de la clave primaria
+  key_cols_base <- c(
+    "cd_a", "ent", "upm", "con", "d_sem", "n_pro_viv",
+    "v_sel", "n_hog", "h_mud", "n_ren", "tipo", "mes_cal"
+  )
+  
+  # 4.2) Seleccionar solo las que existen en ambos archivos
+  key_cols <- intersect(key_cols_base, intersect(names(sdemt_clean), names(coe1t_raw)))
+  
+  # 4.3) Preparar COE1T: variables adicionales (no clave)
+  coe1t_vars <- setdiff(names(coe1t_raw), key_cols)
+  coe1t_clean <- coe1t_raw %>%
+    select(all_of(c(key_cols, coe1t_vars)))
+  
+  rm(coe1t_raw)
+  gc(FALSE)
+  
+  # 4.4) Eliminar duplicados EXACTOS por llave en COE1T
+  # NOTA: Esto garantiza merge 1-a-1 sin inventar reglas de agregación
+  coe1t_clean <- coe1t_clean %>%
+    distinct(across(all_of(key_cols)), .keep_all = TRUE)
+  
+  # 4.5) LEFT JOIN: todas las personas de SDEMT + variables de COE1T si existen
+  merged <- sdemt_clean %>%
+    left_join(coe1t_clean, by = key_cols, suffix = c("", "_coe1"))
+  
+  rm(sdemt_clean, coe1t_clean)
+  gc(FALSE)
+  
+  # --- PASO 5: CONVERTIR TIPOS DE VARIABLES ---
+
+  merged <- merged %>%
+    mutate(
+      # Variables numéricas
+      eda     = as.numeric(eda),
+      fac_tri = as.numeric(fac_tri),
+      ingocup = as.numeric(ingocup),
+      
+      # Variables categóricas (mantener como texto para joins posteriores)
+      clase2 = as.character(clase2),
+      sub_o  = as.character(sub_o),
+      dispo  = as.character(dispo),
+      sex    = as.character(sex),
+      
+      # Variables que pueden no estar en SDEMT (vienen de COE1T o son nuevas)
+      busqueda = if ("busqueda" %in% names(.)) as.character(busqueda) else NA_character_,
+      ambito2  = if ("ambito2"  %in% names(.)) as.character(ambito2)  else NA_character_,
+      p4a      = if ("p4a"      %in% names(.)) as.character(p4a)      else NA_character_,
+      
+      # Agregar identificadores de tiempo
+      anio = anio,
+      trimestre = trimestre,
+      periodo = sprintf("%dQ%d", anio, trimestre)
+    ) %>%
+    # Eliminar columnas duplicadas del merge (terminadas en _coe1)
+    select(-any_of(c("eda_coe1", "fac_tri_coe1")))
+  
+  return(merged)
+}
+```
+
+##### Procesamiento de todos los trimestres
+
+Finalmente se recorre uno por uno los 15 trimestres y se llama a la función `procesar_trimestre_enoen_optimizado` para procesarla. El resultado de cada trimestre se va acumulando en una lista, y cada tres iteraciones se fuerza una limpieza de memoria con `gc()` para evitar que el consumo de RAM se dispare durante el loop. Al terminar el ciclo, apila todos los resultados en la lista a un solo dataframe longitudinal llamado `enoe_completa` usando `bind_rows()`, que contiene a todas las personas de todos los trimestres juntas.
+
+```{r procesar-todos, results='hide', echo = FALSE}
+# ============================================================================
+# EJECUTAR: PROCESAR TODOS LOS TRIMESTRES
+# ============================================================================
+#Este bloque procesa los 15 trimestres (2022Q1-2025Q3) y los combina en una sola base de datos.
+
+# Lista para almacenar resultados de cada trimestre
+lista_trimestres <- list()
+
+# Loop sobre cada trimestre
+for (i in seq_len(nrow(info_trimestres))) {
+  carpeta <- info_trimestres$carpeta[i]
+  anio <- info_trimestres$anio[i]
+  trimestre <- info_trimestres$trimestre[i]
+  
+  ruta_completa <- file.path(RUTA_BASE, carpeta)
+  
+  # Validar que la carpeta exista
+  if (!dir.exists(ruta_completa)) {
+    warning(sprintf("Carpeta no encontrada: %s. Saltando...", ruta_completa))
+    next
+  }
+  
+  # Procesar trimestre con la función optimizada
+  datos_trim <- procesar_trimestre_enoen_optimizado(ruta_completa, anio, trimestre)
+  
+  # Guardar resultado si es válido
+  if (!is.null(datos_trim)) {
+    lista_trimestres[[length(lista_trimestres) + 1]] <- datos_trim
+  }
+  
+  # Forzar limpieza de memoria cada 3 trimestres (optimización adicional)
+  if (i %% 3 == 0) {
+    gc(verbose = FALSE)
+  }
+}
+
+# ============================================================================
+# COMBINAR TODOS LOS TRIMESTRES EN UNA SOLA BASE
+# ============================================================================
+
+
+# bind_rows() apila verticalmente todos los trimestres
+enoe_completa <- bind_rows(lista_trimestres)
+
+# Liberar lista intermedia
+rm(lista_trimestres)
+gc(verbose = FALSE)
+
+#Muestra de Datos
+
+
+```
+
+```{r, echo =FALSE, warning=FALSE}
+kable(enoe_completa[1:6, c(1:3, (ncol(enoe_completa)-2):ncol(enoe_completa))], caption = "Fragmento de la base de datos unificada") %>%
+  kable_styling(latex_options = c("scale_down"))
+```
+
+#### 2. Calcule el **desempleo** en cada trimestre, explicando cómo lo calculó.
+
+\textcolor{blue}{Respuesta}\
+
+La tasa de desempleo mide la proporción de la Población Económicamente Activa (PEA) que está desocupada:
+
+$$
+\text{Tasa de desempleo} = \frac{\text{Desocupados}}{\text{PEA}} \times 100
+$$
+
+Donde:
+
+-   **PEA** = Ocupados + Desocupados = personas con `clase2` $\in \{1, 2\}$
+
+-   **Desocupados** = personas con `clase2 = 2` (sin empleo, buscando activamente, disponibles) En este tipo de encuestas, debemos usar el ponderador `fac_tri` para obtener los resultados trimestrales:
+
+-   **Sin ponderar:** `sum(clase2 == "2")` → conteo de la **muestra**
+
+-   **Ponderado:** `sum(fac_tri[clase2 == "2"])` → estimación de la **población**
+
+El ponderador `fac_tri` indica a cuántas personas de la población representa cada observación de la muestra en el trimestre.
+
+```{r desempleo, echo=FALSE}
+# ============================================================================
+# INCISO 5b) TASA DE DESEMPLEO TRIMESTRAL
+# ============================================================================
+
+
+# Definimos:
+# - PEA: total ponderado (por fac_tri) de personas con clase2 ∈ {1,2}
+# - Desocupados: personas con clase2 = 2
+# - Tasa de desempleo trimestral: 100 × desocupados / PEA
+
+# NOTA: fac_tri es el ponderador trimestral (6 dígitos) que indica a cuántas 
+# personas representa cada caso. Sin usar fac_tri, estaríamos calculando la 
+# "tasa" de la muestra, no de la población, y como el diseño muestral no es 
+# uniforme, podríamos sesgar resultados (sobre/infra-representar estratos).
+
+desempleo <- enoe_completa %>%
+  group_by(anio, trimestre, periodo) %>%
+  summarise(
+    # PEA ponderada: suma de pesos de ocupados (1) y desocupados (2)
+    pea = sum(fac_tri[clase2 %in% c("1", "2")], na.rm = TRUE),
+    
+    # Desocupados ponderados: suma de pesos con clase2 = 2
+    desocupados = sum(fac_tri[clase2 == "2"], na.rm = TRUE),
+    
+    # Tasa de desempleo (porcentaje)
+    tasa_desempleo = (desocupados / pea) * 100,
+    .groups = "drop"
+  ) %>%
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+
+# Mostrar tabla con formato
+kable(desempleo, 
+      digits = 2,
+      caption = "Tabla 5b. Tasa de desempleo trimestral (2022-2025)",
+      col.names = c("Periodo", "PEA", "Desocupados", "Tasa (%)")) %>%
+  kable_styling(full_width = FALSE)
+
+# Exportar resultado
+write_csv(desempleo, file.path(RUTA_BASE, "resultados_5b_desempleo.csv"))
+```
+
+#### 3. Calcule el **subempleo** en cada trimestre, explicando cómo lo calculó.
+
+\textcolor{blue}{Respuesta}\
+
+El **subempleo (subocupación)** captura a ocupados que:
+
+-   Trabajaron menos de 35 horas semanales
+-   **Y tienen necesidad y disponibilidad** para trabajar más horas
+
+$$
+\text{Tasa de subempleo} = \frac{\text{Subocupados}}{\text{Ocupados}} \times 100
+$$
+
+Donde:
+
+-   **Ocupados** = personas con `clase2` = 1
+-   **Subocupados** = ocupados con `sub_o` = 1
+
+```{r subempleo}
+# ============================================================================
+# INCISO 5c) TASA DE SUBEMPLEO TRIMESTRAL
+# ============================================================================
+
+
+# Subempleo (subocupación) trimestral. Definimos:
+# - Ocupados: personas con clase2 = 1
+# - Subocupados: ocupados con sub_o = 1
+# Para obtener totales poblacionales trimestrales usamos el ponderador fac_tri.
+
+# sum(fac_tri[clase2 == "1" & sub_o == "1"], na.rm = TRUE) 
+# --> "suma esos ponderadores" --> total poblacional estimado de subocupados
+
+subempleo <- enoe_completa %>%
+  group_by(anio, trimestre, periodo) %>%
+  summarise(
+    # Total de ocupados ponderado
+    ocupados = sum(fac_tri[clase2 == "1"], na.rm = TRUE),
+    
+    # Total de subocupados ponderado (clase2=1 Y sub_o=1)
+    subempleados = sum(fac_tri[clase2 == "1" & sub_o == "1"], na.rm = TRUE),
+    
+    # Tasa de subempleo (porcentaje)
+    tasa_subempleo = (subempleados / ocupados) * 100,
+    .groups = "drop"
+  ) %>%
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+
+# Mostrar tabla
+kable(subempleo, 
+      digits = 2,
+      caption = "Tabla 5c. Tasa de subempleo trimestral (2022-2025)",
+      col.names = c("Periodo", "Ocupados", "Subempleados", "Tasa (%)")) %>%
+  kable_styling(full_width = FALSE)
+
+# Exportar
+write_csv(subempleo, file.path(RUTA_BASE, "resultados_5c_subempleo.csv"))
+```
+
+#### 4. Calcule la fracción de trabajadores **fuera de la fuerza laboral**, pero **disponibles para trabajar**, en cada trimestre, explicando cómo lo calculó.
+
+\textcolor{blue}{Respuesta}\
+
+La **fuerza laboral (labor force)** incluye a quienes participan en el mercado de trabajo:
+
+-   **Ocupados** (tienen trabajo)
+-   **Desocupados** (no tienen trabajo pero están buscando activamente y disponibles)
+
+Esto es **PEA = ocupados + desocupados**.
+
+Los que **no están en PEA** son la **PNEA (Población No Económicamente Activa)**, que se divide en:
+
+1.  **PNEA disponible** (`clase2` = 3): podrían trabajar, pero no cumplen el criterio de "desocupado" porque típicamente **no están buscando activamente**
+2.  **PNEA no disponible** (`clase2` = 4): no podrían/quieren trabajar (estudiantes, hogar, retiro, etc.)
+
+El inciso pide **PNEA disponible como proporción de PNEA total** (mide "reserva" relativa).
+
+El enunciado usa "trabajadores" de forma coloquial para "personas en edad de trabajar". Técnicamente, en este inciso **no son trabajadores** (porque no están ocupados), sino personas **fuera de la fuerza laboral**.
+
+```{r trabajadores-disponibles}
+# ============================================================================
+# INCISO 5d) TRABAJADORES FUERA DE LA FUERZA LABORAL DISPONIBLES
+# ============================================================================
+
+# cat("\n5d) Trabajadores Fuera de la Fuerza Laboral Disponibles para Trabajar\n")
+# cat("Calculada como: tasa = 100 * (PNEA disponible / PNEA total)\n")
+
+# Definimos como "fuera de la fuerza laboral" a la PNEA (clase2 ∈ {3,4}) y como
+# "disponibles" a la PNEA disponible (clase2 = 3). Para cada trimestre calculamos
+# la fracción Disponibles / PNEA usando fac_tri como ponderador.
+
+trabajadores_disponibles <- enoe_completa %>%
+  group_by(anio, trimestre, periodo) %>%
+  summarise(
+    # PNEA disponible (clase2 = 3)
+    pnea_disponible = sum(fac_tri[clase2 == "3"], na.rm = TRUE),
+    
+    # PNEA total (clase2 = 3 o 4)
+    pnea_total = sum(fac_tri[clase2 %in% c("3", "4")], na.rm = TRUE),
+    
+    # Alias para claridad
+    trab_disp = pnea_disponible,
+    
+    # Tasa de disponibilidad (porcentaje)
+    tasa_disp = if_else(pnea_total > 0, 100 * pnea_disponible / pnea_total, NA_real_),
+    .groups = "drop"
+  ) %>%
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+
+# Mostrar tabla
+kable(trabajadores_disponibles, 
+      digits = 2,
+      caption = "Tabla 5d. PNEA disponible para trabajar (2022-2025)",
+      col.names = c("Periodo", "PNEA disponible", 
+                    "PNEA total", "Trabajadores disp.", "Tasa (%)")) %>%
+  kable_styling(full_width = FALSE)
+
+# Exportar
+write_csv(trabajadores_disponibles, 
+          file.path(RUTA_BASE, "resultados_5d_trabajadores_disponibles.csv"))
+```
+
+#### 5. Calcule qué fracción de los trabajadores trabaja en empresas **chicas, medianas y grandes**, en cada periodo.
+
+\textcolor{blue}{Respuesta}\
+
+Usamos la variable `ambito2` (ámbito de la unidad económica):
+
+| Código | Categoría | Descripción |
+|------------------|-------------------------|-----------------------------|
+| 2, 3 | Micronegocios | Sin establecimiento + Con establecimiento (micro) |
+| 4 | Pequeños establecimientos |  |
+| 5 | Medianos establecimientos |  |
+| 6 | Grandes establecimientos |  |
+| 7 | Gobierno | Sector público |
+| 8 | Otros | No clasificado |
+
+**Nota metodológica:**
+
+-   Sumamos categorías 2+3 para "Micronegocios" (incluye autoempleo)
+-   **Excluimos** "Otros" y "No especificado" para el análisis principal
+-   Creamos una tabla adicional solo con empresas privadas (micro, pequeñas, medianas, grandes)
+
+```{r tamano-empresa}
+# ============================================================================
+# INCISO 5e) DISTRIBUCIÓN DEL TAMAÑO DE EMPRESA
+# ============================================================================
+
+# Definimos el tamaño de las empresas sumando las categorías sin establecimiento
+# con establecimiento de micronegocios. Posteriormente eliminamos la columna
+# "otros" y "no especificado".
+# Tenemos dos bases de datos: una con gobierno, otra solo privadas (PMG).
+
+tamano_empresa <- enoe_completa %>%
+  filter(clase2 == "1") %>%  # Solo ocupados
+  mutate(
+    tamano = case_when(
+      ambito2 %in% c("2","3") ~ "Micronegocios",
+      ambito2 == "4" ~ "Pequeños_establecimientos",
+      ambito2 == "5" ~ "Medianos_establecimientos",
+      ambito2 == "6" ~ "Grandes_establecimientos",
+      ambito2 == "7" ~ "Gobierno",
+      ambito2 == "8" ~ "Otros",
+      TRUE ~ "no_especificado"
+    )
+  ) %>%
+  group_by(anio, trimestre, periodo, tamano) %>%
+  summarise(ocupados = sum(fac_tri, na.rm = TRUE), .groups = "drop") %>%
+  group_by(anio, trimestre, periodo) %>%
+  mutate(porcentaje = (ocupados / sum(ocupados)) * 100) %>%
+  # Ordenar categorías con factor
+  mutate(tamano = factor(tamano, levels = c(
+    "Micronegocios",
+    "Pequeños_establecimientos",
+    "Medianos_establecimientos",
+    "Grandes_establecimientos",
+    "Gobierno",
+    "Otros",
+    "no_especificado"
+  ))) %>%
+  arrange(anio, trimestre, tamano) %>%
+  # Filtrar para análisis principal (sin Otros ni no_especificado)
+  filter(!tamano %in% c("Otros", "no_especificado")) %>%
+  ungroup() %>%                 # <<< ESTO es lo clave
+  select(-anio, -trimestre)
+  
+ 
+# Mostrar tabla (últimos 4 trimestres para claridad)
+  kable(tamano_empresa, 
+        digits = 2,
+        caption = "Tabla 5e. Distribución del tamaño de empresa (2024-2025)",
+        col.names = c("Periodo", "Tamaño", "Ocupados", "Porcentaje (%)")) %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                  full_width = FALSE)
+
+# Exportar tabla completa
+write_csv(tamano_empresa, file.path(RUTA_BASE, "resultados_5e_tamano_empresa.csv"))
+
+# --- TABLA ADICIONAL: SOLO EMPRESAS PRIVADAS (PMG) ---
+empresas_pmg <- tamano_empresa %>%
+  filter(tamano %in% c("Micronegocios", "Pequeños_establecimientos",
+                       "Medianos_establecimientos", "Grandes_establecimientos")) %>%
+  group_by(periodo) %>%
+  mutate(porcentaje_pmg = 100 * ocupados / sum(ocupados, na.rm = TRUE)) %>%
+  ungroup()
+
+kable(empresas_pmg %>% filter(anio >= 2024), 
+      digits = 2,
+      caption = "Tabla 5e. Distribución del tamaño de empresa (2024-2025)",
+      col.names = c("Periodo", "Tamaño", "Ocupados", "Porcentaje Total(%)", "Porcentaje entre empresas(%)")) %>%
+  kable_styling(full_width = FALSE)
+
+write_csv(empresas_pmg, file.path(RUTA_BASE, "resultados_5e_empresas_pmg.csv"))
+```
+
+#### 6. Calcule qué fracción de los trabajadores está **buscando otro empleo**.
+
+\textcolor{blue}{Respuesta}\
+
+Entre los **ocupados** (`clase2` = 1), ¿cuántos están **buscando otro empleo**?
+
+-   Variable clave: `busqueda` = 1 (sí está buscando)
+
+$$
+\text{Proporción buscando otro} = \frac{\text{Ocupados buscando otro}}{\text{Ocupados totales}} \times 100
+$$
+
+```{r buscando-empleo}
+# ============================================================================
+# INCISO 5f) PROPORCIÓN DE OCUPADOS BUSCANDO OTRO EMPLEO
+# ============================================================================
+# 
+# cat("\n5f) Proporción de ocupados buscando otro empleo\n")
+# cat("Calculada como: tasa = 100 * (buscando_otro / ocupados)\n")
+
+# Definimos "trabajadores" como la población ocupada (clase2=1). Identificamos
+# a quienes buscan otro empleo con busqueda=1. Para cada trimestre calculamos
+# el total ponderado de ocupados y de ocupados buscando otro empleo como sumas
+# de fac_tri.
+
+buscando_empleo <- enoe_completa %>%
+  filter(clase2 == "1") %>%  # Solo ocupados
+  group_by(anio, trimestre, periodo) %>%
+  summarise(
+    # Total de ocupados ponderado
+    ocupados = sum(fac_tri, na.rm = TRUE),
+    
+    # Ocupados buscando otro empleo (busqueda = 1)
+    buscando_otro = sum(fac_tri[busqueda == "1"], na.rm = TRUE),
+    
+    # Proporción (porcentaje)
+    proporcion_buscando = if_else(ocupados > 0, 
+                                  100 * buscando_otro / ocupados,
+                                  NA_real_),
+    .groups = "drop"
+  ) %>%
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+
+# Mostrar tabla
+kable(buscando_empleo, 
+      digits = 2,
+      caption = "Tabla 5f. Ocupados buscando otro empleo (2022-2025)",
+      col.names = c("Periodo", "Ocupados", 
+                    "Buscando otro", "Proporción (%)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = FALSE)
+
+# Exportar
+write_csv(buscando_empleo, file.path(RUTA_BASE, "resultados_5f_buscando_empleo.csv"))
+```
+
+#### 7. Grafique la relación entre el **ingreso promedio** y la **edad** de los trabajadores.
+
+\textcolor{blue}{Respuesta}\
+
+Calculamos el **ingreso promedio ponderado** por grupos de edad para ocupados con `ingocup` \> 0.
+
+**¿Por qué usar promedio ponderado?**
+
+En encuestas con diseño muestral complejo como la ENOE, cada fila no representa "1 persona", sino **muchas personas** en la población, indicado por `fac_tri`.
+
+-   **Promedio simple:** `mean(ingocup)` → promedio de la **muestra**
+-   **Promedio ponderado:** `weighted.mean(ingocup, fac_tri)` → promedio de la **población**
+
+Fórmula del promedio ponderado:
+
+$$
+\bar{y}_w = \frac{\sum_i w_i y_i}{\sum_i w_i} = \frac{\sum_i \text{fac\_tri}_i \cdot \text{ingocup}_i}{\sum_i \text{fac\_tri}_i}
+$$
+
+Así, si una observación representa a 2,000 personas y otra a 200, la primera debe "pesar" más en el promedio poblacional.
+
+#### Tratamiento de ingresos cero
+
+Generamos **dos tablas**:
+
+1.  **Ingresos positivos:** solo `ingocup` \> 0 (promedio condicional)
+2.  **Incluyendo ceros:** documentar proporción con `ingocup` = 0 (trabajadores familiares sin pago, etc.)
+
+```{r ingreso-edad}
+# ============================================================================
+# INCISO 5g) INGRESO PROMEDIO POR GRUPO DE EDAD
+# ============================================================================
+
+
+# Grupos de edad definidos
+# - 15-24: jóvenes
+# - 25-34: adultos jóvenes
+# - 35-44: adultos (peak de ingresos esperado)
+# - 45-54: adultos mayores
+# - 55-64: pre-retiro
+# - 65+: adultos mayores / retiro
+
+# --- TABLA 1: SOLO INGRESOS POSITIVOS (promedio condicional) ---
+ingreso_edad_positivo <- enoe_completa %>%
+  filter(clase2 == "1", !is.na(ingocup), ingocup > 0) %>%  # Ocupados con ingreso > 0
+  mutate(
+    grupo_edad = case_when(
+      eda >= 15 & eda < 25 ~ "15-24",
+      eda >= 25 & eda < 35 ~ "25-34",
+      eda >= 35 & eda < 45 ~ "35-44",
+      eda >= 45 & eda < 55 ~ "45-54",
+      eda >= 55 & eda < 65 ~ "55-64",
+      eda >= 65 ~ "65+",
+      TRUE ~ "no_especificado"
+    )
+  ) %>%
+  group_by(anio, trimestre, periodo, grupo_edad) %>%
+  summarise(
+    # Total de ocupados ponderado con ingreso positivo
+    ocupados = sum(fac_tri, na.rm = TRUE),
+    
+    # Ingreso promedio PONDERADO
+    ingreso_promedio = weighted.mean(ingocup, fac_tri, na.rm = TRUE),
+    
+    # Población representada
+    n_personas = sum(fac_tri, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(anio, trimestre, grupo_edad) 
+
+# Mostrar tabla (últimos 4 trimestres)
+kable(ingreso_edad_positivo %>% filter(anio >= 2024) %>% ungroup() %>% select(-anio, -trimestre), 
+      digits = 0,
+      caption = "Tabla 5g. Ingreso promedio por edad (solo ingresos >0, 2024-2025)",
+      col.names = c("Periodo", "Grupo edad", 
+                    "Ocupados", "Ingreso promedio", "N personas")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = FALSE)
+
+# Exportar
+write_csv(ingreso_edad_positivo, 
+          file.path(RUTA_BASE, "resultados_5g_ingreso_edad_positivo.csv"))
+
+# --- TABLA 2: INCLUYENDO INGRESOS CERO (para documentar) ---
+ingreso_edad_0 <- enoe_completa %>%
+  filter(clase2 == "1", !is.na(ingocup)) %>%  # Ocupados con ingocup no NA
+  mutate(
+    grupo_edad = case_when(
+      eda >= 15 & eda < 25 ~ "15-24",
+      eda >= 25 & eda < 35 ~ "25-34",
+      eda >= 35 & eda < 45 ~ "35-44",
+      eda >= 45 & eda < 55 ~ "45-54",
+      eda >= 55 & eda < 65 ~ "55-64",
+      eda >= 65 ~ "65+",
+      TRUE ~ "no_especificado"
+    )
+  ) %>%
+  group_by(anio, trimestre, periodo, grupo_edad) %>%
+  summarise(
+    # Total de ocupados
+    ocupados = sum(fac_tri, na.rm = TRUE),
+    
+    # Proporción con ingreso = 0 (trabajadores familiares sin pago, etc.)
+    prop_ing0 = 100 * sum(fac_tri[ingocup == 0], na.rm = TRUE) / sum(fac_tri, na.rm = TRUE),
+    
+    # Promedio incluyendo ceros
+    ingreso_prom_incl0 = weighted.mean(ingocup, fac_tri, na.rm = TRUE),
+    
+    # Promedio solo positivos (condicional)
+    ocupados_pos = sum(fac_tri[ingocup > 0], na.rm = TRUE),
+    ingreso_prom_pos = if_else(
+      ocupados_pos > 0,
+      weighted.mean(ingocup[ingocup > 0], fac_tri[ingocup > 0], na.rm = TRUE),
+      NA_real_
+    ),
+    .groups = "drop"
+  ) %>%
+  arrange(anio, trimestre, grupo_edad)
+
+# Exportar tabla con ceros
+write_csv(ingreso_edad_0, file.path(RUTA_BASE, "resultados_5g_ingreso_edad0.csv"))
+
+# --- GRÁFICA: INGRESO POR EDAD (SOLO POSITIVOS) ---
+ggplot(ingreso_edad_positivo, aes(x = grupo_edad, y = ingreso_promedio, fill = grupo_edad)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~periodo, ncol = 4) +
+  labs(
+    title = "Ingreso promedio por grupo de edad (2022-2025)",
+    x = "Grupo de edad",
+    y = "Ingreso mensual promedio (pesos)",
+    caption = "Fuente: ENOE Nueva, ocupados con ingreso positivo"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    scale_fill_discrete(palette = c("#00468B", "#008B45", "#E18727", "#374E55", "#AD002A", "#ADB6B6"))
+
+```
+
+#### 8. Para lograr cierto entendimiento de datos tipo **"panel rotativo"** como los de la ENOE, calcule, utilizando a los individuos que aparecen en más de uno de los trimestres, la fracción de trabajadores que pasan del **empleo al desempleo** y la de aquellos que pasan del **desempleo al empleo** en cada trimestre.
+
+\textcolor{blue}{Respuesta}\
+
+El inciso 5i necesita del cálculo de las tasas de transición laboral entre trimestres consecutivos, específicamente la probabilidad de que un individuo empleado en el período t se encuentre desempleado en $t+1$ (transición $E \rightarrow U$), y la probabilidad de que un individuo desempleado en $t$ acceda al empleo en $t+1$ (transición $U \rightarrow E$). La estimación de estas tasas enfrenta una restricción metodológica inherente al diseño de la ENOE: al tratarse de un panel rotativo, no todos los individuos son observados en trimestres consecutivos. Para identificar una transición de $t$ a $t+1$ es necesario contar con observaciones del mismo individuo en ambos períodos; si un individuo aparece en $t$ y reaparece en $t+2$ pero no en $t+1$, la transición trimestral inmediata resulta inobservable. Como consecuencia, las tasas $E \rightarrow U$ y $U \rightarrow E$ se estiman condicionadas a que el individuo sea reentrevistado en el trimestre inmediatamente siguiente, lo cual constituye una restricción muestral que debe tenerse presente al interpretar los resultados.
+
+##### Metodología detallada
+
+###### Paso 1: Identificador de individuo (`id_panel`):
+
+Para seguir a un individuo en el tiempo, construimos un ID concatenando variables de identificación de vivienda/hogar/persona:
+
+| Orden | Variable    | Descripción                             |
+|------:|-------------|-----------------------------------------|
+|     1 | `cd_a`      | Código de área                          |
+|     2 | `ent`       | Entidad federativa                      |
+|     3 | `upm`       | Unidad primaria de muestreo             |
+|     4 | `con`       | Consecutivo del hogar en la UPM         |
+|     5 | `d_sem`     | Semana de levantamiento                 |
+|     6 | `n_pro_viv` | Número progresivo de la vivienda        |
+|     7 | `v_sel`     | Vivienda seleccionada                   |
+|     8 | `n_hog`     | Número de hogar en la vivienda          |
+|     9 | `h_mud`     | Indicador de mudanza del hogar          |
+|    10 | `n_ren`     | Número de renglón (persona en el hogar) |
+|    11 | `tipo`      | Tipo de entrevista (Telefónica o no)    |
+
+```         
+id_panel = cd_a + ent + upm + con + d_sem + n_pro_viv + v_sel + n_hog + h_mud + n_ren + tipo
+```
+
+###### Paso 2: Índice de tiempo trimestral (`t`)
+
+Creamos un índice ordinal para detectar trimestres consecutivos:
+
+$$
+t = 4 \times \text{año} + \text{trimestre}
+$$
+
+Ejemplo:
+
+-   2022Q1: $t = 4 \times 2022 + 1 = 8089$
+-   2022Q2: $t = 4 \times 2022 + 2 = 8090$ (consecutivo)
+
+Consecutividad: $t_{\text{next}} = t + 1$
+
+###### Paso 3: Resolver duplicados por individuo-trimestre
+
+En encuestas complejas puede ocurrir que para un mismo `(id_panel, trimestre)` aparezcan **varias filas** (revisitas, actualizaciones).
+
+**Regla de colapso:**
+
+-   Dentro de cada grupo `(id_panel, t)`, elegir **la fila con el mayor `mes_cal`**
+-   Guardar `n_filas` para diagnóstico
+
+**Intuición:** `mes_cal` funciona como "marca de tiempo" dentro del trimestre. Elegir el máximo es una forma sistemática de conservar la observación "más reciente".
+
+###### Paso 4: Definir estados laborales
+
+Reducimos la clasificación laboral a dos estados:
+
+-   **E (empleo):** `clase2` == "1"
+-   **U (desempleo):** `clase2` == "2"
+-   Otros valores de `clase2` (fuera de fuerza laboral) → `NA` (excluidos)
+
+###### Paso 5: Construir transiciones consecutivas
+
+1.  Ordenar observaciones por `id_panel` y `t`
+2.  Para cada individuo:
+    -   `estado_next` = estado en el siguiente registro (usando `lead()`)
+    -   `t_next` = *t* del siguiente registro
+3.  Filtrar solo pares **consecutivos:** `t_next == t + 1`
+
+###### Paso 6: Calcular tasas de transición (con ponderadores)
+
+**Denominadores** (población que sí tiene observación en *t+1*):
+
+-   $E_{\text{denom}}(t)$: total ponderado de individuos en **E** en *t* que aparecen en *t+1*
+-   $U_{\text{denom}}(t)$: total ponderado de individuos en **U** en *t* que aparecen en *t+1*
+
+**Numeradores (flujos):**
+
+-   $EU(t)$: total ponderado que pasa de **E en t** a **U en t+1**
+-   $UE(t)$: total ponderado que pasa de **U en t** a **E en t+1**
+
+**Fracciones (en porcentaje):**
+
+$$
+\text{frac\_EU}(t) = 100 \times \frac{EU(t)}{E_{\text{denom}}(t)}
+$$
+
+$$
+\text{frac\_UE}(t) = 100 \times \frac{UE(t)}{U_{\text{denom}}(t)}
+$$
+
+###### Implementación con Julia (optimización)
+
+Para manejar eficientemente el procesamiento del panel (millones de observaciones), usamos **Julia** vía `JuliaCall`:
+
+```{r panel-transiciones, results='hide', message=FALSE}
+# ============================================================================
+# INCISO 5i) PANEL ROTATIVO: TRANSICIONES EMPLEO <-> DESEMPLEO
+# ============================================================================
+
+# --- INICIALIZAR JULIA ---
+julia_setup()
+julia_library("DataFrames")
+
+# --- DEFINIR FUNCIÓN EN JULIA PARA CREAR PANEL BASE ---
+julia_command('
+function crear_enoe_panel_base_v2(df)
+    # Crear identificador único del panel combinando variables de identificación
+    # cd_a=código de área, ent=entidad, upm=unidad primaria de muestreo, etc.
+    # Este ID permite seguir al mismo individuo entre trimestres
+    df.id_panel = string.(df.cd_a, "_", df.ent, "_", df.upm, "_", 
+                          df.con, "_", df.d_sem, "_", df.n_pro_viv, "_",
+                          df.v_sel, "_", df.n_hog, "_", df.h_mud, "_", 
+                          df.n_ren, "_", df.tipo)
+    
+    # Crear variable de tiempo t = año*4 + trimestre (orden cronológico)
+    # Ejemplo: 2022Q1 = 2022*4 + 1 = 8089
+    df.t = df.anio .* 4 .+ df.trimestre
+    
+    # Convertir mes_cal a numérico para ordenar observaciones dentro del trimestre
+    # Si falla la conversión (valores no numéricos), asigna -Inf para que queden al final
+    df.mes_cal_num = map(df.mes_cal) do x
+        try
+            parse(Float64, string(x))
+        catch
+            -Inf
+        end
+    end
+    
+    # Agrupar por id_panel y trimestre (t)
+    # Esto identifica todas las observaciones del mismo individuo en el mismo trimestre
+    gdf = groupby(df, [:id_panel, :t, :anio, :trimestre, :periodo])
+    
+    # Para cada grupo (individuo-trimestre), calcular n_filas y seleccionar UNA observación
+    result = combine(gdf) do subdf
+        # Contar cuántas filas hay para este individuo en este trimestre
+        n_filas = nrow(subdf)
+        
+        # Encontrar la observación más reciente (mes_cal_num más alto)
+        # Esto resuelve duplicados dentro del mismo trimestre
+        max_idx = argmax(subdf.mes_cal_num)
+        
+        # Retornar la fila seleccionada más el conteo de filas originales
+        row = subdf[max_idx, :]
+        (
+            id_panel = row.id_panel,
+            anio = row.anio,
+            trimestre = row.trimestre,
+            periodo = row.periodo,
+            t = row.t,
+            clase2 = row.clase2,        # Variable de clasificación laboral
+            fac_tri = row.fac_tri,      # Factor de expansión (peso muestral)
+            n_filas = n_filas
+        )
+    end
+    
+    # Crear variable de estado laboral a partir de clase2
+    # "1" = Empleado (E), "2" = Desempleado (U), otros = missing
+    result.estado = map(result.clase2) do c
+        if c == "1"
+            "E"
+        elseif c == "2"
+            "U"
+        else
+            missing
+        end
+    end
+    
+    # Seleccionar solo las columnas necesarias para el análisis
+    result = select(result, :id_panel, :anio, :trimestre, :periodo, :t, :clase2, :fac_tri, :n_filas, :estado)
+    
+    # Filtrar: mantener solo observaciones con estado válido (E o U) y peso muestral válido
+    result = result[.!ismissing.(result.estado) .& .!ismissing.(result.fac_tri), :]
+    
+    return result
+end
+')
+
+# --- PASAR DATAFRAME DE R A JULIA ---
+julia_assign("enoe_completa", enoe_completa)
+
+# --- EJECUTAR FUNCIÓN EN JULIA ---
+enoe_panel_base <- julia_eval("crear_enoe_panel_base_v2(enoe_completa)")
+
+# --- LIMPIAR MEMORIA DE JULIA ---
+julia_command("enoe_completa = nothing")
+julia_command("GC.gc()")  # Forzar recolección de basura
+
+# --- CONVERTIR RESULTADO A R ---
+panel_r <- as_tibble(enoe_panel_base) %>%
+  mutate(
+    anio = as.integer(anio),
+    trimestre = as.integer(trimestre),
+    t = as.integer(t),
+    fac_tri = as.numeric(fac_tri),
+    estado = as.character(estado),
+    id_panel = as.character(id_panel),
+    periodo = as.character(periodo)
+  ) %>%
+  # Filtro de seguridad: asegurar que solo tengamos E o U con peso válido
+  filter(
+    !is.na(estado), estado %in% c("E","U"),
+    !is.na(fac_tri)
+  ) %>%
+  # Ordenar por individuo y tiempo para facilitar cálculo de transiciones
+  arrange(id_panel, t)
+
+# --- DIAGNÓSTICOS RÁPIDOS ---
+# Verificar que no haya duplicados (mismo individuo en mismo trimestre)
+dup_check <- panel_r %>%
+  count(id_panel, t, name = "n") %>%
+  filter(n > 1) %>%
+  nrow()
+
+cat(sprintf("  Diagnóstico: duplicados id_panel-t = %d\n", dup_check))
+
+# Contar cuántas transiciones consecutivas existen
+trans_count <- panel_r %>%
+  group_by(id_panel) %>%
+  summarise(n_trans = sum(lead(t) == t + 1, na.rm = TRUE), .groups="drop") %>%
+  summarise(total_trans = sum(n_trans), ids_con_trans = sum(n_trans > 0))
+
+print(trans_count)
+
+# --- CONSTRUIR TRANSICIONES CONSECUTIVAS t -> t+1 ---
+transiciones <- panel_r %>%
+  group_by(id_panel) %>%
+  mutate(
+    t_next = lead(t),              # Siguiente trimestre
+    estado_next = lead(estado)     # Estado laboral en el siguiente trimestre
+  ) %>%
+  ungroup() %>%
+  # Mantener solo pares consecutivos (t y t+1) donde ambos estados sean observados
+  filter(!is.na(estado_next), t_next == t + 1)
+
+# --- CALCULAR TASAS DE TRANSICIÓN POR TRIMESTRE ---
+resultados_5i <- transiciones %>%
+  group_by(anio, trimestre, periodo) %>%
+  summarise(
+    # Denominadores: total de empleados (E) y desempleados (U) en t
+    E_denom = sum(fac_tri[estado == "E"], na.rm = TRUE),
+    U_denom = sum(fac_tri[estado == "U"], na.rm = TRUE),
+    
+    # Numeradores: transiciones de E->U y U->E
+    EU = sum(fac_tri[estado == "E" & estado_next == "U"], na.rm = TRUE),
+    UE = sum(fac_tri[estado == "U" & estado_next == "E"], na.rm = TRUE),
+    
+    # Calcular porcentajes de transición
+    frac_EU = if_else(E_denom > 0, 100 * EU / E_denom, NA_real_),
+    frac_UE = if_else(U_denom > 0, 100 * UE / U_denom, NA_real_),
+    .groups = "drop"
+  ) %>%
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+
+print(resultados_5i)
+
+# --- VERIFICACIÓN DE CONSISTENCIA: MATRIZ 2x2 ---
+check_flows <- transiciones %>%
+  group_by(anio, trimestre, periodo) %>%
+  summarise(
+    # Flujos de E->E, E->U, U->U, U->E (ponderados)
+    EE = sum(fac_tri[estado=="E" & estado_next=="E"], na.rm=TRUE),
+    EU = sum(fac_tri[estado=="E" & estado_next=="U"], na.rm=TRUE),
+    UU = sum(fac_tri[estado=="U" & estado_next=="U"], na.rm=TRUE),
+    UE = sum(fac_tri[estado=="U" & estado_next=="E"], na.rm=TRUE),
+    
+    # Totales de empleados y desempleados en t
+    E_denom = sum(fac_tri[estado=="E"], na.rm=TRUE),
+    U_denom = sum(fac_tri[estado=="U"], na.rm=TRUE),
+    
+    # Verificar consistencia: la suma de flujos debe igualar los totales
+    # diff_E y diff_U deberían ser ≈0 si todo está correcto
+    diff_E = E_denom - (EE + EU),
+    diff_U = U_denom - (UU + UE),
+    .groups="drop"
+  ) %>%
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+
+print(check_flows)
+
+# Exportar resultados finales
+write_csv(resultados_5i, 
+          file.path(RUTA_BASE, "resultados_5i_transiciones_EU_UE.csv"))
+```
+
+##### Resultados del inciso 5i
+
+```{r tabla-5i}
+# Mostrar tabla de transiciones
+kable(resultados_5i, 
+      digits = 3,
+      caption = "Tabla 5i. Transiciones empleo-desempleo (panel rotativo, 2022-2025)",
+      col.names = c("Periodo", "E denom", "U denom", 
+                    "EU", "UE", "frac_EU (%)", "frac_UE (%)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = FALSE)
+```
+
+##### Conclusión
+
+Los resultados muestran un mercado laboral con dinámicas asimétricas entre los flujos de entrada y salida del desempleo. La tasa de transición de empleo a desempleo ($E \rightarrow U$) es reducida y estable a lo largo del período analizado, oscilando entre 1.4% y 1.9% por trimestre, lo que sugiere que la pérdida de empleo —medida como paso al desempleo— es un evento poco frecuente en el contexto mexicano. 
+
+Por su parte, la tasa de transición de desempleo a empleo ($U \rightarrow E$) es notablemente elevada, situándose entre 72% y 79% por trimestre, lo que implica que el desempleo tiende a ser transitorio: la gran mayoría de los individuos desempleados en un trimestre dado aparecen empleados en el período siguiente.
+
+Este patrón es consistente con el hecho observable que en el mercado laboral mexicano: la desocupación es estructuralmente baja en parte porque los trabajadores no pueden sostener períodos prolongados de búsqueda y se reincorporan rápidamente al mercado, frecuentemente a través de empleos informales. 
+
+En consecuencia, el ajuste ante shocks laborales no necesariamente se manifiesta en mayor desempleo, sino en otros márgenes como el deterioro de la calidad del empleo, el aumento de la informalidad, la reducción de horas trabajadas o la salida temporal de la fuerza laboral.
+
+Para 2025Q1, la probabilidad trimestral de pérdida de empleo se mantiene baja (aproximadamente 1.47%) y la probabilidad de reempleo alcanza 78.9%, uno de los valores más altos de la muestra, sin que se observe un deterioro apreciable en ninguno de los dos márgenes.
+*No obstante, es importante señalar que estas tasas están sujetas a dos restricciones metodológicas que condicionan su interpretación.* 
+En primer lugar, se calculan sobre los individuos que permanecen en el panel entre trimestres consecutivos, lo que puede introducir un sesgo de selección si los desempleados que reaparecen en $t+1$ son precisamente aquellos con mayor probabilidad de reempleo. En segundo lugar, solo capturan transiciones entre los estados de empleo y desempleo, excluyendo los flujos hacia y desde la inactividad, por lo que pueden subestimar la magnitud real del ajuste laboral agregado.
+
+
+#### 9. Identifique una pregunta adicional de cuestionario de la ENOE, grafique la proporción de las respuestas que son de cada posibilidad, e interprete.
+
+\textcolor{blue}{Respuesta}\

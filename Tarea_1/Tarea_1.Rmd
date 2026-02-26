@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, warnings = FALSE)
 ```
 
 \begin{center}
@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 \vspace{0.5cm}  
 
-{\Huge \textbf{Macroeconomia II}}
+{\Huge \textbf{Macroeconomía II}}
 
 \vspace{0.5cm} 
 
@@ -341,7 +341,7 @@ Sustituyendo la cantidad de trabajadores que desean trabajar en el sector primar
 $$ U^* = N_p(\frac{w_p-b}{w_s-b})-N_p
 = (\frac{w_p-b}{w_s-b}-1)N_p.$$
 
-##### ** (b)** ¿Cómo afecta un aumento en $N_p$ al desempleo? Explique intuitivamente por qué, aunque el desempleo toma la forma de trabajadores esperando empleos del sector primario, aumentar el número de esos empleos puede aumentar el desempleo.
+##### **(b)** ¿Cómo afecta un aumento en $N_p$ al desempleo? Explique intuitivamente por qué, aunque el desempleo toma la forma de trabajadores esperando empleos del sector primario, aumentar el número de esos empleos puede aumentar el desempleo.
 
 \textcolor{blue}{Respuesta}
 
@@ -356,7 +356,7 @@ $$
 
 Como sabemos el salario del sector primario es superior al del sector secundario, entonces al aumentar los puestos del sector primario aumenta el desempleo. Esto porque aumenta más que proporcionalmente el número de trabajadores que busca entrar al sector primario una vez se abren vacantes. Entonces aunque se abran más, el desempleo aumenta.
 
-#####  **(c)** ¿Cuáles son los efectos de un aumento en el nivel de beneficios por desempleo?
+##### **(c)** ¿Cuáles son los efectos de un aumento en el nivel de beneficios por desempleo?
 
 \textcolor{blue}{Respuesta}
 
@@ -380,7 +380,7 @@ $$
 
 Por lo tanto, el desempleo de equilibrio aumenta cuando $b$ se incrementa. Esto tiene sentido ya que si aumenta el seguro de desempleo se está más dispuesto a apostar por entrar al sector primario ya que la pérdida de salario es menor. La diferencia entre lo que se gana en el sector secundario y desempleado disminuye.
 
-##  2. Estudie el mercado laboral en México siguiendo estos pasos: **[2 horas, 0.5 puntos cada inciso]**. Documente su trabajo para que se pueda replicar.
+## 2. Estudie el mercado laboral en México siguiendo estos pasos: **[2 horas, 0.5 puntos cada inciso]**. Documente su trabajo para que se pueda replicar.
 
 #### 1. Obtenga del **INEGI** una serie anual del **producto interno bruto** en términos reales, genere la serie de su **tasa de cambio anual**, calcule su **volatilidad**. *(Serie 1)*
 
@@ -502,56 +502,11 @@ Por favor documente su trabajo para que se pueda replicar.
 
 ### 1. Descargue los micro-datos de la **ENOE**, correspondientes a los cuatro trimestres de **2022, 2023 y 2024**.
 
-La ENOE la descargamos del sitio oficial de INEGI:
+Los microdatos provienen de la ENOE, disponibles en el portal del INEGI en formato CSV comprimido por trimestre. De cada trimestre se utilizan exclusivamente dos archivos: el SDEMT, que contiene las variables sociodemográficas y de condición de actividad, y el COE1T, con la información de ingresos, tamaño de establecimiento y búsqueda de empleo.
 
--   **URL:** <https://www.inegi.org.mx/programas/enoe/15ymas/>
--   **Formato:** Archivos CSV comprimidos (ZIP) por trimestre
--   **Estructura:** De cada trimestre utilizamos únicamente los siguientes 2 archivos:
-    -   `SDEMT.csv`: Cuestionario sociodemográfico (identificación, edad, sexo, estado laboral)
-    -   `COE1T.csv`: Cuestionario de ocupación y empleo (ingresos, tamaño de empresa, búsqueda)
+El análisis adopta una arquitectura híbrida R-Julia. R opera como lenguaje principal para la carga, limpieza y transformación de microdatos, así como para la generación de todos los resultados estadísticos. Julia se reserva para el procesamiento del panel rotativo por el tiempo de carga de R.
 
-##### Estructura esperada de directorios
 
-Los microdatos de la ENOE deben organizarse en carpetas trimestrales con la nomenclatura oficial de INEGI. Para eso hay que descomprimir en una carpeta.
-
-```         
-RUTA_BASE/
-├── enoe_n_2022_trim1_csv/
-│   ├── SDEMT202201.csv
-│   └── COE1T202201.csv
-├── enoe_n_2022_trim2_csv/
-│   ├── SDEMT202202.csv
-│   └── COE1T202202.csv
-├── ...
-└── enoe_n_2025_trim3_csv/
-    ├── SDEMT202503.csv
-    └── COE1T202503.csv
-```
-
-###### Arquitectura del código
-
-El presente análisis se implementa mediante una arquitectura híbrida R-Julia.**R** se utiliza como lenguaje principal para la carga, limpieza, transformación de datos y generación de resultados (incisos 5a-5g).**Julia** se emplea específicamente para el procesamiento eficiente del panel rotativo y el cálculo de la matriz de transiciones entre estados de empleo y desempleo (inciso 5i), por su capacidad de optimizando el manejo de grandes volúmenes de datos longitudinales.
-
-*Nota:* Julia no es estrictamente necesaria si solo se ejecutan los incisos 5a-5h; sin embargo, el inciso 5h (panel rotativo) requiere su instalación para el cálculo de transiciones laborales.
-
-#### Configuración inicial
-
-##### Paquetes principales
-
--   `JuliaCall` ($\geq$ 0.17.0): Interfaz R-Julia para el procesamiento del panel longitudinal. Permite la invocación de funciones Julia desde R sin necesidad de archivos intermedios.
-
--   `kableExtra` ($\geq$ 1.4.0): Crea tablas HTML o LaTeX de 'knitr'. Es un generador de tablas ligero, proveniente de 'knitr', permite crear tablas complejas y personalizar estilos.
-
--   `tidyverse` ($\geq$ 1.3.0): Suite integrada de paquetes para ciencia de datos que incluye:
-
-    -   `dplyr`: Manipulación y transformación de datos
-    -   `ggplot2`: Generación de gráficas
-    -   `tidyr`: Reestructuración de datos
-    -   `readr`: Lectura eficiente de archivos CSV
-    -   `stringr`: Manipulación de cadenas de texto
-    -   `purrr`: Programación funcional
-
-De Julia se utiliza únicamente el paquete `DataFrames`, que viene incluido en la distribución estándar de Julia ($\geq$ 1.6), por lo que no requiere instalación adicional.
 
 ```{r librerias, message=FALSE, warning=FALSE}
 # ============================================================================
@@ -563,6 +518,8 @@ De Julia se utiliza únicamente el paquete `DataFrames`, que viene incluido en l
 library(JuliaCall)      # Para procesamiento eficiente del panel (inciso 5i)
 library(tidyverse)      # Suite completa: dplyr, ggplot2, tidyr, etc.
 library(kableExtra)     # Tablas con formato HTML/LaTeX
+
+library(scales) #Para las graficas de ggplot
 
 ```
 
@@ -624,18 +581,27 @@ info_trimestres <- tibble(
 
 Para optimizar memoria, sólo cargamos las variables necesarias para el Ejercicio 5:
 
-| Variable | Uso en el ejercicio |
-|-------------------------|-----------------------------------------------|
-| `cd_a, ent, upm, ...` | Identificación única de individuos (panel longitudinal 5i) |
-| `mes_cal` | Resolver duplicados dentro del trimestre (seleccionar observación más reciente) |
-| `eda, sex` | Ingresos por edad (5g), distribución por sexo (5h) |
-| `clase2` | Clasificación laboral: desempleo (5b), subempleo (5c), disponibilidad (5d), transiciones (5i) |
-| `sub_o` | Subocupación (5c) |
-| `fac_tri` | **Ponderador trimestral** (Importante: expande muestra a población) |
-| `ingocup` | Ingresos por edad (5g) |
-| `busqueda` | Búsqueda de otro empleo (5f) |
-| `ambito2` | Tamaño de empresa (5e) |
-| `r_def, c_res` | Filtros de calidad (entrevistas completas, residentes válidos) |
+\begin{table}[ht]
+\centering
+\caption{Variables y uso en el ejercicio}
+\label{tab:variables-enoe}
+\begin{tabular}{ll}
+\hline
+Variable & Uso en el ejercicio \\
+\hline
+cd\_a, ent, upm, ... & Identificación única de individuos (panel longitudinal 5i) \\
+mes\_cal & Resolver duplicados dentro del trimestre \\
+eda, sex & Ingresos por edad (5g), distribución por sexo (5h) \\
+clase2 & Clasificación laboral y transiciones (5i) \\
+sub\_o & Subocupación (5c) \\
+fac\_tri & Ponderador trimestral \\
+ingocup & Ingresos por edad (5g) \\
+busqueda & Búsqueda de otro empleo (5f) \\
+ambito2 & Tamaño de empresa (5e) \\
+r\_def, c\_res & Filtros de calidad \\
+\hline
+\end{tabular}
+\end{table}
 
 ```{r variables-clave}
 # ============================================================================
@@ -697,6 +663,33 @@ normalizar_columnas <- function(df) {
   names(df) <- str_replace(names(df), "^cve_", "")
   return(df)
 }
+
+
+periodo_a_meses <- function(periodos, sep_meses = "–", sep_anio = ": ") {
+  stopifnot(is.character(periodos))
+
+  ok <- grepl("^\\d{4}Q[1-4]$", periodos)
+  if (!all(ok)) {
+    bad <- paste(periodos[!ok], collapse = ", ")
+    stop("Formato inválido. Usa 'YYYYQ1'..'YYYYQ4'. Problema con: ", bad)
+  }
+
+  anio <- substr(periodos, 1, 4)
+  q <- as.integer(substr(periodos, 6, 6))
+
+  meses <- c("enero","febrero","marzo","abril","mayo","junio",
+             "julio","agosto","septiembre","octubre","noviembre","diciembre")
+
+  mes_ini <- (q - 1) * 3 + 1
+  mes_fin <- mes_ini + 2
+
+  paste0(anio, sep_anio, meses[mes_ini], sep_meses, meses[mes_fin])
+}
+
+# Ejemplo
+periodo_a_meses(c("2022Q1","2022Q2","2025Q3"))
+# "2022: enero–marzo" "2022: abril–junio" "2025: julio–septiembre"
+
 ```
 
 ##### Función auxiliar 2: Procesamiento de un trimestres
@@ -908,11 +901,6 @@ gc(verbose = FALSE)
 
 ```
 
-```{r, echo =FALSE, warning=FALSE}
-kable(enoe_completa[1:6, c(1:3, (ncol(enoe_completa)-2):ncol(enoe_completa))], caption = "Fragmento de la base de datos unificada") %>%
-  kable_styling(latex_options = c("scale_down"))
-```
-
 #### 2. Calcule el **desempleo** en cada trimestre, explicando cómo lo calculó.
 
 \textcolor{blue}{Respuesta}\
@@ -964,13 +952,15 @@ desempleo <- enoe_completa %>%
     tasa_desempleo = (desocupados / pea) * 100,
     .groups = "drop"
   ) %>%
-    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre) %>%
+  mutate(periodo = periodo_a_meses(periodo))%>%
+  select(-pea, -desocupados)
 
 # Mostrar tabla con formato
 kable(desempleo, 
       digits = 2,
       caption = "Tabla 5b. Tasa de desempleo trimestral (2022-2025)",
-      col.names = c("Periodo", "PEA", "Desocupados", "Tasa (%)")) %>%
+      col.names = c("Periodo", "Tasa (%)")) %>%
   kable_styling(full_width = FALSE)
 
 # Exportar resultado
@@ -1022,13 +1012,16 @@ subempleo <- enoe_completa %>%
     tasa_subempleo = (subempleados / ocupados) * 100,
     .groups = "drop"
   ) %>%
-    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre) %>%
+  mutate(periodo = periodo_a_meses(periodo)) %>%
+  select(-ocupados, -subempleados)
+
 
 # Mostrar tabla
 kable(subempleo, 
       digits = 2,
       caption = "Tabla 5c. Tasa de subempleo trimestral (2022-2025)",
-      col.names = c("Periodo", "Ocupados", "Subempleados", "Tasa (%)")) %>%
+      col.names = c("Periodo", "Tasa Subempleados (%)")) %>%
   kable_styling(full_width = FALSE)
 
 # Exportar
@@ -1083,14 +1076,15 @@ trabajadores_disponibles <- enoe_completa %>%
     tasa_disp = if_else(pnea_total > 0, 100 * pnea_disponible / pnea_total, NA_real_),
     .groups = "drop"
   ) %>%
-    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre) %>%
+  mutate(periodo = periodo_a_meses(periodo)) %>%
+  select(-pnea_total, -trab_disp, -pnea_disponible)
 
 # Mostrar tabla
 kable(trabajadores_disponibles, 
       digits = 2,
       caption = "Tabla 5d. PNEA disponible para trabajar (2022-2025)",
-      col.names = c("Periodo", "PNEA disponible", 
-                    "PNEA total", "Trabajadores disp.", "Tasa (%)")) %>%
+      col.names = c("Periodo", "Tasa (%)")) %>%
   kable_styling(full_width = FALSE)
 
 # Exportar
@@ -1102,16 +1096,24 @@ write_csv(trabajadores_disponibles,
 
 \textcolor{blue}{Respuesta}\
 
-Usamos la variable `ambito2` (ámbito de la unidad económica):
+Usamos la variable `ambito2`:
 
-| Código | Categoría | Descripción |
-|------------------|-------------------------|-----------------------------|
-| 2, 3 | Micronegocios | Sin establecimiento + Con establecimiento (micro) |
-| 4 | Pequeños establecimientos |  |
-| 5 | Medianos establecimientos |  |
-| 6 | Grandes establecimientos |  |
-| 7 | Gobierno | Sector público |
-| 8 | Otros | No clasificado |
+\begin{table}[ht]
+\centering
+\caption{Ámbito de la unidad económica}
+\begin{tabular}{lll}
+\hline
+Código & Categoría & Descripción \\
+\hline
+2, 3 & Micronegocios & Sin establecimiento + Con establecimiento (micro) \\
+4 & Pequeños establecimientos &  \\
+5 & Medianos establecimientos &  \\
+6 & Grandes establecimientos &  \\
+7 & Gobierno & Sector público \\
+8 & Otros & No clasificado \\
+\hline
+\end{tabular}
+\end{table}
 
 **Nota metodológica:**
 
@@ -1157,38 +1159,35 @@ tamano_empresa <- enoe_completa %>%
     "no_especificado"
   ))) %>%
   arrange(anio, trimestre, tamano) %>%
-  # Filtrar para análisis principal (sin Otros ni no_especificado)
-  filter(!tamano %in% c("Otros", "no_especificado")) %>%
+  # Filtrar para análisis principal (sin Otros)
+  filter(!tamano %in% c("no_especificado")) %>%
   ungroup() %>%                 # <<< ESTO es lo clave
-  select(-anio, -trimestre)
+  select(-periodo, -trimestre, -ocupados)
+
+# Exportar tabla completa
+write_csv(tamano_empresa, file.path(RUTA_BASE, "resultados_5e_tamano_empresa.csv"))
+
+tamano_empresa <- tamano_empresa %>%
+  group_by(anio, tamano) %>%
+  summarise(
+    porcentaje = mean(porcentaje, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from  = tamano,
+    values_from = porcentaje
+  ) %>%
+  arrange(anio)
   
  
 # Mostrar tabla (últimos 4 trimestres para claridad)
   kable(tamano_empresa, 
         digits = 2,
-        caption = "Tabla 5e. Distribución del tamaño de empresa (2024-2025)",
-        col.names = c("Periodo", "Tamaño", "Ocupados", "Porcentaje (%)")) %>%
+        caption = "Tabla 5e. Distribución del tamaño de empresa (2022-2025)",
+        col.names = c("Año", "Micronegocios", "Pequeños", "Medianos", "Grandes","Gobierno", "Otros" )) %>%
     kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
                   full_width = FALSE)
 
-# Exportar tabla completa
-write_csv(tamano_empresa, file.path(RUTA_BASE, "resultados_5e_tamano_empresa.csv"))
-
-# --- TABLA ADICIONAL: SOLO EMPRESAS PRIVADAS (PMG) ---
-empresas_pmg <- tamano_empresa %>%
-  filter(tamano %in% c("Micronegocios", "Pequeños_establecimientos",
-                       "Medianos_establecimientos", "Grandes_establecimientos")) %>%
-  group_by(periodo) %>%
-  mutate(porcentaje_pmg = 100 * ocupados / sum(ocupados, na.rm = TRUE)) %>%
-  ungroup()
-
-kable(empresas_pmg %>% filter(anio >= 2024), 
-      digits = 2,
-      caption = "Tabla 5e. Distribución del tamaño de empresa (2024-2025)",
-      col.names = c("Periodo", "Tamaño", "Ocupados", "Porcentaje Total(%)", "Porcentaje entre empresas(%)")) %>%
-  kable_styling(full_width = FALSE)
-
-write_csv(empresas_pmg, file.path(RUTA_BASE, "resultados_5e_empresas_pmg.csv"))
 ```
 
 #### 6. Calcule qué fracción de los trabajadores está **buscando otro empleo**.
@@ -1232,14 +1231,14 @@ buscando_empleo <- enoe_completa %>%
                                   NA_real_),
     .groups = "drop"
   ) %>%
-    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
-
+    arrange(anio, trimestre) %>%   select(-anio, -trimestre) %>%
+  mutate(periodo = periodo_a_meses(periodo))
+.buscando_empleo <- buscando_empleo %>% select(-ocupados, -buscando_otro)
 # Mostrar tabla
-kable(buscando_empleo, 
+kable(.buscando_empleo, 
       digits = 2,
       caption = "Tabla 5f. Ocupados buscando otro empleo (2022-2025)",
-      col.names = c("Periodo", "Ocupados", 
-                    "Buscando otro", "Proporción (%)")) %>%
+      col.names = c("Periodo", "Proporción (%)")) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
                 full_width = FALSE)
 
@@ -1290,98 +1289,108 @@ Generamos **dos tablas**:
 # - 65+: adultos mayores / retiro
 
 # --- TABLA 1: SOLO INGRESOS POSITIVOS (promedio condicional) ---
+
 ingreso_edad_positivo <- enoe_completa %>%
-  filter(clase2 == "1", !is.na(ingocup), ingocup > 0) %>%  # Ocupados con ingreso > 0
-  mutate(
-    grupo_edad = case_when(
-      eda >= 15 & eda < 25 ~ "15-24",
-      eda >= 25 & eda < 35 ~ "25-34",
-      eda >= 35 & eda < 45 ~ "35-44",
-      eda >= 45 & eda < 55 ~ "45-54",
-      eda >= 55 & eda < 65 ~ "55-64",
-      eda >= 65 ~ "65+",
-      TRUE ~ "no_especificado"
-    )
-  ) %>%
-  group_by(anio, trimestre, periodo, grupo_edad) %>%
-  summarise(
-    # Total de ocupados ponderado con ingreso positivo
-    ocupados = sum(fac_tri, na.rm = TRUE),
-    
-    # Ingreso promedio PONDERADO
-    ingreso_promedio = weighted.mean(ingocup, fac_tri, na.rm = TRUE),
-    
-    # Población representada
-    n_personas = sum(fac_tri, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  arrange(anio, trimestre, grupo_edad) 
+    filter(clase2 == "1", !is.na(ingocup), ingocup > 0) %>%  # Ocupados con ingreso > 0
+    mutate(
+        grupo_edad = case_when(
+            eda >= 15 & eda < 25 ~ "15-24",
+            eda >= 25 & eda < 35 ~ "25-34",
+            eda >= 35 & eda < 45 ~ "35-44",
+            eda >= 45 & eda < 55 ~ "45-54",
+            eda >= 55 & eda < 65 ~ "55-64",
+            eda >= 65 ~ "65+",
+            TRUE ~ "no_especificado"
+        )
+    ) %>%
+    group_by(anio, trimestre, periodo, grupo_edad) %>%
+    summarise(
+        # Total de ocupados ponderado con ingreso positivo
+        ocupados = sum(fac_tri, na.rm = TRUE),
+        
+        # Ingreso promedio PONDERADO
+        ingreso_promedio = weighted.mean(ingocup, fac_tri, na.rm = TRUE),
+        
+        # Población representada
+        n_personas = sum(fac_tri, na.rm = TRUE),
+        .groups = "drop"
+    ) %>%
+    arrange(anio, trimestre, grupo_edad) %>%
+    ungroup() %>% select(-trimestre, -ocupados, -periodo, -n_personas) %>% group_by(anio, grupo_edad) %>% summarise(ingreso_promedio = mean(ingreso_promedio)) %>%
+    pivot_wider(
+        names_from  = grupo_edad,
+        values_from = ingreso_promedio
+    ) %>%
+    arrange(anio)
 
 # Mostrar tabla (últimos 4 trimestres)
-kable(ingreso_edad_positivo %>% filter(anio >= 2024) %>% ungroup() %>% select(-anio, -trimestre), 
+kable(ingreso_edad_positivo, 
       digits = 0,
-      caption = "Tabla 5g. Ingreso promedio por edad (solo ingresos >0, 2024-2025)",
-      col.names = c("Periodo", "Grupo edad", 
-                    "Ocupados", "Ingreso promedio", "N personas")) %>%
+      caption = "Tabla 5g. Ingreso total promedio por grupo de edad",
+      col.names = c("Año", "15-24","25-34","35-44","45-54","55-64","65+")) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
                 full_width = FALSE)
 
-# Exportar
-write_csv(ingreso_edad_positivo, 
-          file.path(RUTA_BASE, "resultados_5g_ingreso_edad_positivo.csv"))
 
-# --- TABLA 2: INCLUYENDO INGRESOS CERO (para documentar) ---
-ingreso_edad_0 <- enoe_completa %>%
-  filter(clase2 == "1", !is.na(ingocup)) %>%  # Ocupados con ingocup no NA
-  mutate(
-    grupo_edad = case_when(
-      eda >= 15 & eda < 25 ~ "15-24",
-      eda >= 25 & eda < 35 ~ "25-34",
-      eda >= 35 & eda < 45 ~ "35-44",
-      eda >= 45 & eda < 55 ~ "45-54",
-      eda >= 55 & eda < 65 ~ "55-64",
-      eda >= 65 ~ "65+",
-      TRUE ~ "no_especificado"
+```
+
+```{r}
+# LAS MIL GRAFICAS 
+
+
+# Configuración por año
+config <- list(
+  list(anio = 2022, color = "#520025",     num = 1),
+  list(anio = 2023, color = "#520025",   num = 2),
+  list(anio = 2024, color = "#520025",    num = 3),
+  list(anio = 2025, color = "#520025", num = 4)
+)
+
+# Loop para generar cada gráfica
+for (cfg in config) {
+  
+  # Filtrar y calcular ingreso promedio
+  datos <- enoe_completa %>%
+    filter(clase2 == "1", !is.na(ingocup), ingocup > 0, anio == cfg$anio) %>%
+    group_by(eda) %>%
+    mutate(ingreso_promedio = weighted.mean(ingocup, fac_tri, na.rm = TRUE)) %>%
+    ungroup()
+  
+  # Calcular media de edad ANTES de graficar (este era el error clave)
+  media_eda <- mean(datos$eda, na.rm = TRUE)
+  min_ingreso <- min(datos$ingreso_promedio, na.rm = TRUE)
+  
+  # Construir gráfica
+  p <- ggplot(datos, aes(x = eda, y = ingreso_promedio)) +
+    geom_point(color = cfg$color, size = 2) +
+    geom_vline(xintercept = media_eda, linetype = "dashed", 
+               color = "gray40", linewidth = 0.5) +
+    annotate("text", x = media_eda + 1, y = min_ingreso,
+             label = "Edad Promedio", color = "gray40", 
+             hjust = 0, size = 3, fontface = "bold") +
+    scale_y_continuous(labels = dollar_format(prefix = "$", big.mark = ",")) +
+    scale_x_continuous(breaks = seq(min(datos$eda), max(datos$eda), by = 5)) +
+    labs(
+      title = paste0("Gráfica ", cfg$num, ": Relación entre Ingreso Promedio y Edad de los Trabajadores ", cfg$anio),
+      x = "Edad",
+      y = "Ingreso Promedio (MXN)",
+      caption = "Fuente: Elaboración propia con datos de la ENOE-INEGI."
+    ) +
+    theme_minimal() +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(face = "bold", size = 12),
+      plot.caption = element_text(size = 10, color = "gray50", hjust = 0),
+      axis.text.x = element_text(angle = 0, hjust = 0.5)
     )
-  ) %>%
-  group_by(anio, trimestre, periodo, grupo_edad) %>%
-  summarise(
-    # Total de ocupados
-    ocupados = sum(fac_tri, na.rm = TRUE),
-    
-    # Proporción con ingreso = 0 (trabajadores familiares sin pago, etc.)
-    prop_ing0 = 100 * sum(fac_tri[ingocup == 0], na.rm = TRUE) / sum(fac_tri, na.rm = TRUE),
-    
-    # Promedio incluyendo ceros
-    ingreso_prom_incl0 = weighted.mean(ingocup, fac_tri, na.rm = TRUE),
-    
-    # Promedio solo positivos (condicional)
-    ocupados_pos = sum(fac_tri[ingocup > 0], na.rm = TRUE),
-    ingreso_prom_pos = if_else(
-      ocupados_pos > 0,
-      weighted.mean(ingocup[ingocup > 0], fac_tri[ingocup > 0], na.rm = TRUE),
-      NA_real_
-    ),
-    .groups = "drop"
-  ) %>%
-  arrange(anio, trimestre, grupo_edad)
-
-# Exportar tabla con ceros
-write_csv(ingreso_edad_0, file.path(RUTA_BASE, "resultados_5g_ingreso_edad0.csv"))
-
-# --- GRÁFICA: INGRESO POR EDAD (SOLO POSITIVOS) ---
-ggplot(ingreso_edad_positivo, aes(x = grupo_edad, y = ingreso_promedio, fill = grupo_edad)) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~periodo, ncol = 4) +
-  labs(
-    title = "Ingreso promedio por grupo de edad (2022-2025)",
-    x = "Grupo de edad",
-    y = "Ingreso mensual promedio (pesos)",
-    caption = "Fuente: ENOE Nueva, ocupados con ingreso positivo"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    scale_fill_discrete(palette = c("#00468B", "#008B45", "#E18727", "#374E55", "#AD002A", "#ADB6B6"))
+  
+  # Guardar cada gráfica
+  ggsave(paste0("grafica_", cfg$anio, ".png"), plot = p, 
+         width = 10, height = 6, dpi = 300)
+  
+  # También la muestra en el viewer
+  print(p)
+}
 
 ```
 
@@ -1397,19 +1406,27 @@ El inciso 5i necesita del cálculo de las tasas de transición laboral entre tri
 
 Para seguir a un individuo en el tiempo, construimos un ID concatenando variables de identificación de vivienda/hogar/persona:
 
-| Orden | Variable    | Descripción                             |
-|------:|-------------|-----------------------------------------|
-|     1 | `cd_a`      | Código de área                          |
-|     2 | `ent`       | Entidad federativa                      |
-|     3 | `upm`       | Unidad primaria de muestreo             |
-|     4 | `con`       | Consecutivo del hogar en la UPM         |
-|     5 | `d_sem`     | Semana de levantamiento                 |
-|     6 | `n_pro_viv` | Número progresivo de la vivienda        |
-|     7 | `v_sel`     | Vivienda seleccionada                   |
-|     8 | `n_hog`     | Número de hogar en la vivienda          |
-|     9 | `h_mud`     | Indicador de mudanza del hogar          |
-|    10 | `n_ren`     | Número de renglón (persona en el hogar) |
-|    11 | `tipo`      | Tipo de entrevista (Telefónica o no)    |
+\begin{table}[ht]
+\centering
+\caption{Composición de la variable de identificación}
+\begin{tabular}{ll}
+\hline
+Variable & Descripción \\
+\hline
+\texttt{cd\_a} & Código de área \\
+\texttt{ent} & Entidad federativa \\
+\texttt{upm} & Unidad primaria de muestreo \\
+\texttt{con} & Consecutivo del hogar en la UPM \\
+\texttt{d\_sem} & Semana de levantamiento \\
+\texttt{n\_pro\_viv} & Número progresivo de la vivienda \\
+\texttt{v\_sel} & Vivienda seleccionada \\
+\texttt{n\_hog} & Número de hogar en la vivienda \\
+\texttt{h\_mud} & Indicador de mudanza del hogar \\
+\texttt{n\_ren} & Número de renglón (persona en el hogar) \\
+\texttt{tipo} & Tipo de entrevista (Telefónica o no) \\
+\hline
+\end{tabular}
+\end{table}
 
 ```         
 id_panel = cd_a + ent + upm + con + d_sem + n_pro_viv + v_sel + n_hog + h_mud + n_ren + tipo
@@ -1688,18 +1705,15 @@ kable(resultados_5i,
 
 ##### Conclusión
 
-Los resultados muestran un mercado laboral con dinámicas asimétricas entre los flujos de entrada y salida del desempleo. La tasa de transición de empleo a desempleo ($E \rightarrow U$) es reducida y estable a lo largo del período analizado, oscilando entre 1.4% y 1.9% por trimestre, lo que sugiere que la pérdida de empleo —medida como paso al desempleo— es un evento poco frecuente en el contexto mexicano. 
+Los resultados muestran un mercado laboral con dinámicas asimétricas entre los flujos de entrada y salida del desempleo. La tasa de transición de empleo a desempleo ($E \rightarrow U$) es reducida y estable a lo largo del período analizado, oscilando entre 1.4% y 1.9% por trimestre, lo que sugiere que la pérdida de empleo —medida como paso al desempleo— es un evento poco frecuente en el contexto mexicano.
 
 Por su parte, la tasa de transición de desempleo a empleo ($U \rightarrow E$) es notablemente elevada, situándose entre 72% y 79% por trimestre, lo que implica que el desempleo tiende a ser transitorio: la gran mayoría de los individuos desempleados en un trimestre dado aparecen empleados en el período siguiente.
 
-Este patrón es consistente con el hecho observable que en el mercado laboral mexicano: la desocupación es estructuralmente baja en parte porque los trabajadores no pueden sostener períodos prolongados de búsqueda y se reincorporan rápidamente al mercado, frecuentemente a través de empleos informales. 
+Este patrón es consistente con el hecho observable que en el mercado laboral mexicano: la desocupación es estructuralmente baja en parte porque los trabajadores no pueden sostener períodos prolongados de búsqueda y se reincorporan rápidamente al mercado, frecuentemente a través de empleos informales.
 
 En consecuencia, el ajuste ante shocks laborales no necesariamente se manifiesta en mayor desempleo, sino en otros márgenes como el deterioro de la calidad del empleo, el aumento de la informalidad, la reducción de horas trabajadas o la salida temporal de la fuerza laboral.
 
-Para 2025Q1, la probabilidad trimestral de pérdida de empleo se mantiene baja (aproximadamente 1.47%) y la probabilidad de reempleo alcanza 78.9%, uno de los valores más altos de la muestra, sin que se observe un deterioro apreciable en ninguno de los dos márgenes.
-*No obstante, es importante señalar que estas tasas están sujetas a dos restricciones metodológicas que condicionan su interpretación.* 
-En primer lugar, se calculan sobre los individuos que permanecen en el panel entre trimestres consecutivos, lo que puede introducir un sesgo de selección si los desempleados que reaparecen en $t+1$ son precisamente aquellos con mayor probabilidad de reempleo. En segundo lugar, solo capturan transiciones entre los estados de empleo y desempleo, excluyendo los flujos hacia y desde la inactividad, por lo que pueden subestimar la magnitud real del ajuste laboral agregado.
-
+Para 2025Q1, la probabilidad trimestral de pérdida de empleo se mantiene baja (aproximadamente 1.47%) y la probabilidad de reempleo alcanza 78.9%, uno de los valores más altos de la muestra, sin que se observe un deterioro apreciable en ninguno de los dos márgenes. *No obstante, es importante señalar que estas tasas están sujetas a dos restricciones metodológicas que condicionan su interpretación.* En primer lugar, se calculan sobre los individuos que permanecen en el panel entre trimestres consecutivos, lo que puede introducir un sesgo de selección si los desempleados que reaparecen en $t+1$ son precisamente aquellos con mayor probabilidad de reempleo. En segundo lugar, solo capturan transiciones entre los estados de empleo y desempleo, excluyendo los flujos hacia y desde la inactividad, por lo que pueden subestimar la magnitud real del ajuste laboral agregado.
 
 #### 9. Identifique una pregunta adicional de cuestionario de la ENOE, grafique la proporción de las respuestas que son de cada posibilidad, e interprete.
 

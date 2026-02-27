@@ -577,31 +577,6 @@ info_trimestres <- tibble(
 
 ```
 
-##### Variables seleccionadas
-
-Para optimizar memoria, sólo cargamos las variables necesarias para el Ejercicio 5:
-
-\begin{table}[ht]
-\centering
-\caption{Variables y uso en el ejercicio}
-\label{tab:variables-enoe}
-\begin{tabular}{ll}
-\hline
-Variable & Uso en el ejercicio \\
-\hline
-cd\_a, ent, upm, ... & Identificación única de individuos (panel longitudinal 5i) \\
-mes\_cal & Resolver duplicados dentro del trimestre \\
-eda, sex & Ingresos por edad (5g), distribución por sexo (5h) \\
-clase2 & Clasificación laboral y transiciones (5i) \\
-sub\_o & Subocupación (5c) \\
-fac\_tri & Ponderador trimestral \\
-ingocup & Ingresos por edad (5g) \\
-busqueda & Búsqueda de otro empleo (5f) \\
-ambito2 & Tamaño de empresa (5e) \\
-r\_def, c\_res & Filtros de calidad \\
-\hline
-\end{tabular}
-\end{table}
 
 ```{r variables-clave}
 # ============================================================================
@@ -648,9 +623,8 @@ vars_clave <- c(
 
 ```
 
-##### Función auxiliar 1: Normalizar nombres de columnas
 
-Definimos una función llamada `normalizar_columnas`. Esto porque según la estructura de la base de datos de la ENOE, se incluye el prefijo `cve_` en los nombres de algunas variables, que no aparecen en los archivos `.csv`. Por lo que para evitar pérdida de información por la diferencia en nomenclatura, usamos esta para uniformidad.
+
 
 ```{r funcion-normalizar}
 # ============================================================================
@@ -692,11 +666,6 @@ periodo_a_meses(c("2022Q1","2022Q2","2025Q3"))
 
 ```
 
-##### Función auxiliar 2: Procesamiento de un trimestres
-
-Definimos una función llamada `procesar_trimestre_enoen_optimizado` que toma como argumentos la ruta de ka carpeta de un trimestre y el año y número de trimestre correspondientes, y devuelve un tibble que contiene únicamente la población válida. Esta es la **función principal** que carga, limpia y junta los datos de un trimestre.
-
-Internamente hace cinco cosas en secuencia: primero detecta los dos archivos CSV del trimestre (SDEMT y COE1T); luego lee únicamente las columnas que se necesitan para el ejercicio, evitando cargar todo el archivo en memoria; después filtra la muestra para quedarse solo con entrevistas completas, residentes y personas de 15 años o más; enseguida cruza ambos archivos mediante un left join usando la clave primaria de 12 variables que debería identificar a cada persona en la encuesta; y finalmente convierte las variables a sus tipos correctos (numérico, carácter) y agrega columnas de año, trimestre y período para poder apilar todos los trimestres en una sola base después. A lo largo del proceso va liberando memoria con rm() y gc() cada vez que un objeto intermedio ya no se necesita.
 
 ```{r funcion-procesar-trimestre, echo = FALSE}
 # ============================================================================
@@ -843,9 +812,7 @@ procesar_trimestre_enoen_optimizado <- function(ruta_carpeta, anio, trimestre) {
 }
 ```
 
-##### Procesamiento de todos los trimestres
 
-Finalmente se recorre uno por uno los 15 trimestres y se llama a la función `procesar_trimestre_enoen_optimizado` para procesarla. El resultado de cada trimestre se va acumulando en una lista, y cada tres iteraciones se fuerza una limpieza de memoria con `gc()` para evitar que el consumo de RAM se dispare durante el loop. Al terminar el ciclo, apila todos los resultados en la lista a un solo dataframe longitudinal llamado `enoe_completa` usando `bind_rows()`, que contiene a todas las personas de todos los trimestres juntas.
 
 ```{r procesar-todos, results='hide', echo = FALSE}
 # ============================================================================
@@ -911,17 +878,8 @@ $$
 \text{Tasa de desempleo} = \frac{\text{Desocupados}}{\text{PEA}} \times 100
 $$
 
-Donde:
-
--   **PEA** = Ocupados + Desocupados = personas con `clase2` $\in \{1, 2\}$
-
--   **Desocupados** = personas con `clase2 = 2` (sin empleo, buscando activamente, disponibles) En este tipo de encuestas, debemos usar el ponderador `fac_tri` para obtener los resultados trimestrales:
-
--   **Sin ponderar:** `sum(clase2 == "2")` → conteo de la **muestra**
-
--   **Ponderado:** `sum(fac_tri[clase2 == "2"])` → estimación de la **población**
-
-El ponderador `fac_tri` indica a cuántas personas de la población representa cada observación de la muestra en el trimestre.
+La tasa de desocupación la calculamos a partir de dos componentes de la Población Económicamente Activa. Los ocupados corresponden a quienes tienen empleo, mientras que los desocupados son aquellas personas sin empleo que buscan activamente uno y están disponibles para trabajar. Ambos grupos identificados mediante la variable clase2 del SDEMT.
+Un aspecto metodológico importante en el trabajo con encuestas por muestreo complejo como la ENOE es el uso de factores de expansión. Cada observación en la muestra no representa a un individuo, sino a un conjunto de personas en la población. Entonces utilizamos el ponderador trimestral `fac_tri`, que cuantifica precisamente esa representación. Ignorarlo y trabajar con conteos simples arrojaría estimaciones de la muestra, no de la población. Toda cifra reportada en este análisis incorpora dicho factor, de modo que los resultados son representativos a nivel poblacional.
 
 ```{r desempleo, echo=FALSE}
 # ============================================================================
@@ -967,23 +925,20 @@ kable(desempleo,
 write_csv(desempleo, file.path(RUTA_BASE, "resultados_5b_desempleo.csv"))
 ```
 
+
+
 #### 3. Calcule el **subempleo** en cada trimestre, explicando cómo lo calculó.
 
 \textcolor{blue}{Respuesta}\
 
-El **subempleo (subocupación)** captura a ocupados que:
+La tasa de subocupación complementa al indicador de desempleo abierto al capturar una forma de subutilización laboral menos visible: 	población ocupada con necesidad y disponibilidad de ofertar más tiempo de trabajo. La calculamos como:
 
--   Trabajaron menos de 35 horas semanales
--   **Y tienen necesidad y disponibilidad** para trabajar más horas
 
 $$
 \text{Tasa de subempleo} = \frac{\text{Subocupados}}{\text{Ocupados}} \times 100
 $$
 
-Donde:
-
--   **Ocupados** = personas con `clase2` = 1
--   **Subocupados** = ocupados con `sub_o` = 1
+Donde, el denominador corresponde al total de ocupados (`clase2 = 1`), mientras que el numerador restringe ese universo a quienes satisfacen simultáneamente el criterio de jornada reducida y la disposición a ampliarla (`sub_o = 1`). Como en el resto del análisis, ambas cifras se obtienen aplicando el factor de expansión `fac_tri`. Esta distinción es relevante desde el punto de vista analítico: dos economías pueden exhibir tasas de desocupación similares y diferir sustancialmente en sus niveles de subutilización del factor trabajo, diferencia que solo la tasa de subocupación logra capturar.
 
 ```{r subempleo}
 # ============================================================================
@@ -1032,21 +987,14 @@ write_csv(subempleo, file.path(RUTA_BASE, "resultados_5c_subempleo.csv"))
 
 \textcolor{blue}{Respuesta}\
 
-La **fuerza laboral (labor force)** incluye a quienes participan en el mercado de trabajo:
 
--   **Ocupados** (tienen trabajo)
--   **Desocupados** (no tienen trabajo pero están buscando activamente y disponibles)
+Las personas de 15 años de edad en adelante que ocupados o que buscaron ocupación forman la Población Económicamente activa o la Fuerza Laboral. Quienes no pertenecen a ninguno de estos grupos conforman la Población No Económicamente Activa (PNEA), que a su vez se subdivide en dos segmentos: la **PNEA disponible**, integrada por personas que podrían trabajar pero no buscan empleo activamente (`clase2 = 3`), y la **PNEA no disponible**, que agrupa a estudiantes, personas dedicadas al hogar, jubilados y otros individuos que no pueden o no desean incorporarse al mercado (`clase2 = 4`).
 
-Esto es **PEA = ocupados + desocupados**.
+El indicador construido es la PNEA disponible como proporción de la PNEA total, calculado para cada trimestre aplicando el factor de expansión `fac_tri`:
 
-Los que **no están en PEA** son la **PNEA (Población No Económicamente Activa)**, que se divide en:
+$$\text{Fracción disponible} = \frac{\sum \texttt{fac\_tri}\;[\texttt{clase2}=3]}{\sum \texttt{fac\_tri}\;[\texttt{clase2} \in \{3,4\}]} \times 100$$
 
-1.  **PNEA disponible** (`clase2` = 3): podrían trabajar, pero no cumplen el criterio de "desocupado" porque típicamente **no están buscando activamente**
-2.  **PNEA no disponible** (`clase2` = 4): no podrían/quieren trabajar (estudiantes, hogar, retiro, etc.)
-
-El inciso pide **PNEA disponible como proporción de PNEA total** (mide "reserva" relativa).
-
-El enunciado usa "trabajadores" de forma coloquial para "personas en edad de trabajar". Técnicamente, en este inciso **no son trabajadores** (porque no están ocupados), sino personas **fuera de la fuerza laboral**.
+Este cociente puede interpretarse como una medida de la reserva laboral, la fracción de quienes están fuera de la fuerza laboral pero que, podrían transitar hacia ella. Los resultados trimestrales se presentan en la Tabla 5d.
 
 ```{r trabajadores-disponibles}
 # ============================================================================
@@ -1096,30 +1044,8 @@ write_csv(trabajadores_disponibles,
 
 \textcolor{blue}{Respuesta}\
 
-Usamos la variable `ambito2`:
-
-\begin{table}[ht]
-\centering
-\caption{Ámbito de la unidad económica}
-\begin{tabular}{lll}
-\hline
-Código & Categoría & Descripción \\
-\hline
-2, 3 & Micronegocios & Sin establecimiento + Con establecimiento (micro) \\
-4 & Pequeños establecimientos &  \\
-5 & Medianos establecimientos &  \\
-6 & Grandes establecimientos &  \\
-7 & Gobierno & Sector público \\
-8 & Otros & No clasificado \\
-\hline
-\end{tabular}
-\end{table}
-
-**Nota metodológica:**
-
--   Sumamos categorías 2+3 para "Micronegocios" (incluye autoempleo)
--   **Excluimos** "Otros" y "No especificado" para el análisis principal
--   Creamos una tabla adicional solo con empresas privadas (micro, pequeñas, medianas, grandes)
+La clasificación del empleo según el tamaño de la unidad económica se construye a partir de la variable ambito2 del COE1T. Los micronegocios agrupan dos categorías: establecimientos sin local fijo y microestablecimientos con local, lo que permite capturar tanto el autoempleo informal como las microempresas formalmente ubicadas. Los estratos restantes corresponden a establecimientos pequeños, medianos y grandes, más el sector gobierno.
+Para el análisis principal se excluyen las categorías "Otros" y "No especificado", al no ser clasificables en ningún segmento productivo identificable. Adicionalmente, se construye una tabla complementaria restringida al sector privado —micro, pequeño, mediano y grande— que permite examinar la estructura del empleo formal e informal sin la distorsión que introduce el empleo público.
 
 ```{r tamano-empresa}
 # ============================================================================
@@ -1190,17 +1116,20 @@ tamano_empresa <- tamano_empresa %>%
 
 ```
 
+De la \@ref(tamano_empresa) vemos la concentración del empleo en micronegocios, con alrededor del 40% de los ocupados. Esta cifra refleja una estructura productiva con un peso considerable del autoempleo y la microempresa, segmento donde las condiciones laborales (acceso a seguridad social, estabilidad contractual, productividad) son sistemáticamente inferiores a las del empleo formal en establecimientos de mayor tamaño.
+Sin embargo, la participación de los micronegocios muestra una caída leve pero sostenida en el periodo, de 40.69% en 2022 a 40.08% en 2025, mientras que los establecimientos grandes ganan terreno, pasando de 9.46% a 9.87%. Quizá como resultado de los efuerzos recientes del gobierno hacia la formalización laboral, aunque la magnitud es modesta y no permite hablar de una transformación estructural.
+El empleo en gobierno, por su parte, exhibe una pequeña contracción. Finalmente, la categoría "Otros" sugiere un margen no despreciable de ocupados cuya inserción laboral no queda bien clasificada por la encuesta. La categoría "No específicados" fue omitida.
+
 #### 6. Calcule qué fracción de los trabajadores está **buscando otro empleo**.
 
 \textcolor{blue}{Respuesta}\
 
-Entre los **ocupados** (`clase2` = 1), ¿cuántos están **buscando otro empleo**?
+Entre la población ocupada (`clase2 = 1`) es posible identificar a quienes, aun teniendo empleo, buscan activamente una ocupación distinta (`busqueda = 1`). El indicador se construye como:
 
--   Variable clave: `busqueda` = 1 (sí está buscando)
+$$\text{Proporción buscando otro empleo} = \frac{\sum \texttt{fac\_tri}\;[\texttt{clase2}=1,\; \texttt{busqueda}=1]}{\sum \texttt{fac\_tri}\;[\texttt{clase2}=1]} \times 100$$
 
-$$
-\text{Proporción buscando otro} = \frac{\text{Ocupados buscando otro}}{\text{Ocupados totales}} \times 100
-$$
+Este indicador captura una dimensión de insatisfacción laboral que no queda recogida ni en la tasa de desocupación ni en la de subocupación: trabajadores que, formalmente ocupados, activamente buscan un empleo distinto. Su magnitud es relevante como señal de las condiciones de calidad del empleo —remuneración, estabilidad, jornada— más allá de la mera existencia de una ocupación o subocupación. Los resultados trimestrales se presentan en la Tabla 5f.
+
 
 ```{r buscando-empleo}
 # ============================================================================
@@ -1250,29 +1179,12 @@ write_csv(buscando_empleo, file.path(RUTA_BASE, "resultados_5f_buscando_empleo.c
 
 \textcolor{blue}{Respuesta}\
 
-Calculamos el **ingreso promedio ponderado** por grupos de edad para ocupados con `ingocup` \> 0.
+**Ingreso promedio por grupo de edad**
 
-**¿Por qué usar promedio ponderado?**
+Para los ocupados con ingreso positivo (`ingocup > 0`), se calcula el ingreso promedio ponderado por grupos quinquenales de edad mediante `weighted.mean(ingocup, fac_tri)`. Se excluyen observaciones con ingreso igual a cero. Que quizá pertenezcan a trabajadores familiares sin pago o figuras análogas, dado que su inclusión distorsionaría el promedio de lo que se considera usualmente como "ingresos", que deben ser positivos. 
 
-En encuestas con diseño muestral complejo como la ENOE, cada fila no representa "1 persona", sino **muchas personas** en la población, indicado por `fac_tri`.
+Los resultados se presentan tanto en la \@ref(ingreso_edad_positivo), que resume el ingreso promedio anual por grupo de edad, como en las Gráficas 1–4, que trazan la relación ingreso-edad año por año a nivel individual de edad. La línea vertical punteada en cada gráfica señala la edad promedio de los ocupados.
 
--   **Promedio simple:** `mean(ingocup)` → promedio de la **muestra**
--   **Promedio ponderado:** `weighted.mean(ingocup, fac_tri)` → promedio de la **población**
-
-Fórmula del promedio ponderado:
-
-$$
-\bar{y}_w = \frac{\sum_i w_i y_i}{\sum_i w_i} = \frac{\sum_i \text{fac\_tri}_i \cdot \text{ingocup}_i}{\sum_i \text{fac\_tri}_i}
-$$
-
-Así, si una observación representa a 2,000 personas y otra a 200, la primera debe "pesar" más en el promedio poblacional.
-
-#### Tratamiento de ingresos cero
-
-Generamos **dos tablas**:
-
-1.  **Ingresos positivos:** solo `ingocup` \> 0 (promedio condicional)
-2.  **Incluyendo ceros:** documentar proporción con `ingocup` = 0 (trabajadores familiares sin pago, etc.)
 
 ```{r ingreso-edad}
 # ============================================================================
@@ -1334,33 +1246,27 @@ kable(ingreso_edad_positivo,
 
 ```
 
-```{r}
+
+```{r, fig.width=7, fig.height=4, out.width="85%", fig.align="center"}
 # LAS MIL GRAFICAS 
-
-
-# Configuración por año
 config <- list(
-  list(anio = 2022, color = "#520025",     num = 1),
-  list(anio = 2023, color = "#520025",   num = 2),
-  list(anio = 2024, color = "#520025",    num = 3),
+  list(anio = 2022, color = "#520025", num = 1),
+  list(anio = 2023, color = "#520025", num = 2),
+  list(anio = 2024, color = "#520025", num = 3),
   list(anio = 2025, color = "#520025", num = 4)
 )
 
-# Loop para generar cada gráfica
 for (cfg in config) {
   
-  # Filtrar y calcular ingreso promedio
   datos <- enoe_completa %>%
     filter(clase2 == "1", !is.na(ingocup), ingocup > 0, anio == cfg$anio) %>%
     group_by(eda) %>%
     mutate(ingreso_promedio = weighted.mean(ingocup, fac_tri, na.rm = TRUE)) %>%
     ungroup()
   
-  # Calcular media de edad ANTES de graficar (este era el error clave)
-  media_eda <- mean(datos$eda, na.rm = TRUE)
+  media_eda   <- mean(datos$eda, na.rm = TRUE)
   min_ingreso <- min(datos$ingreso_promedio, na.rm = TRUE)
   
-  # Construir gráfica
   p <- ggplot(datos, aes(x = eda, y = ingreso_promedio)) +
     geom_point(color = cfg$color, size = 2) +
     geom_vline(xintercept = media_eda, linetype = "dashed", 
@@ -1384,121 +1290,21 @@ for (cfg in config) {
       axis.text.x = element_text(angle = 0, hjust = 0.5)
     )
   
-  # Guardar cada gráfica
-  ggsave(paste0("grafica_", cfg$anio, ".png"), plot = p, 
-         width = 10, height = 6, dpi = 300)
-  
-  # También la muestra en el viewer
   print(p)
 }
-
 ```
 
 #### 8. Para lograr cierto entendimiento de datos tipo **"panel rotativo"** como los de la ENOE, calcule, utilizando a los individuos que aparecen en más de uno de los trimestres, la fracción de trabajadores que pasan del **empleo al desempleo** y la de aquellos que pasan del **desempleo al empleo** en cada trimestre.
 
 \textcolor{blue}{Respuesta}\
 
-El inciso 5i necesita del cálculo de las tasas de transición laboral entre trimestres consecutivos, específicamente la probabilidad de que un individuo empleado en el período t se encuentre desempleado en $t+1$ (transición $E \rightarrow U$), y la probabilidad de que un individuo desempleado en $t$ acceda al empleo en $t+1$ (transición $U \rightarrow E$). La estimación de estas tasas enfrenta una restricción metodológica inherente al diseño de la ENOE: al tratarse de un panel rotativo, no todos los individuos son observados en trimestres consecutivos. Para identificar una transición de $t$ a $t+1$ es necesario contar con observaciones del mismo individuo en ambos períodos; si un individuo aparece en $t$ y reaparece en $t+2$ pero no en $t+1$, la transición trimestral inmediata resulta inobservable. Como consecuencia, las tasas $E \rightarrow U$ y $U \rightarrow E$ se estiman condicionadas a que el individuo sea reentrevistado en el trimestre inmediatamente siguiente, lo cual constituye una restricción muestral que debe tenerse presente al interpretar los resultados.
+La ENOE permite construir un panel rotativo siguiendo a los mismos individuos entre trimestres consecutivos. Para calcular las probabilidades se enlazaron las observaciones del mismo individuo entre trimestres consecutivos utilizando un identificador único que concatena las variables de ubicación geográfica, hogar y persona del SDEMT. El índice $t = 4 \times \text{año} + \text{trimestre}$ permite detectar pares estrictamente consecutivos; cuando un individuo aparece más de una vez en un trimestre se conserva la observación de mayor `mes_cal`. Los estados se reducen a empleo (E) y desempleo (U), excluyendo a la PNEA, y todas las tasas se estiman aplicando el factor de expansión `fac_tri` sobre el subconjunto de individuos efectivamente reentrevistados en $t+1$. Dado el volumen de observaciones longitudinales, el procesamiento del panel se delegó a Julia vía `JuliaCall`.
 
-##### Metodología detallada
+Las fracciones de interés son:
 
-###### Paso 1: Identificador de individuo (`id_panel`):
+$$\text{frac}_{EU}(t) = 100 \times \frac{\sum \texttt{fac\_tri}\,[E_t \to U_{t+1}]}{\sum \texttt{fac\_tri}\,[E_t]} \qquad \text{frac}_{UE}(t) = 100 \times \frac{\sum \texttt{fac\_tri}\,[U_t \to E_{t+1}]}{\sum \texttt{fac\_tri}\,[U_t]}$$
 
-Para seguir a un individuo en el tiempo, construimos un ID concatenando variables de identificación de vivienda/hogar/persona:
-
-\begin{table}[ht]
-\centering
-\caption{Composición de la variable de identificación}
-\begin{tabular}{ll}
-\hline
-Variable & Descripción \\
-\hline
-\texttt{cd\_a} & Código de área \\
-\texttt{ent} & Entidad federativa \\
-\texttt{upm} & Unidad primaria de muestreo \\
-\texttt{con} & Consecutivo del hogar en la UPM \\
-\texttt{d\_sem} & Semana de levantamiento \\
-\texttt{n\_pro\_viv} & Número progresivo de la vivienda \\
-\texttt{v\_sel} & Vivienda seleccionada \\
-\texttt{n\_hog} & Número de hogar en la vivienda \\
-\texttt{h\_mud} & Indicador de mudanza del hogar \\
-\texttt{n\_ren} & Número de renglón (persona en el hogar) \\
-\texttt{tipo} & Tipo de entrevista (Telefónica o no) \\
-\hline
-\end{tabular}
-\end{table}
-
-```         
-id_panel = cd_a + ent + upm + con + d_sem + n_pro_viv + v_sel + n_hog + h_mud + n_ren + tipo
-```
-
-###### Paso 2: Índice de tiempo trimestral (`t`)
-
-Creamos un índice ordinal para detectar trimestres consecutivos:
-
-$$
-t = 4 \times \text{año} + \text{trimestre}
-$$
-
-Ejemplo:
-
--   2022Q1: $t = 4 \times 2022 + 1 = 8089$
--   2022Q2: $t = 4 \times 2022 + 2 = 8090$ (consecutivo)
-
-Consecutividad: $t_{\text{next}} = t + 1$
-
-###### Paso 3: Resolver duplicados por individuo-trimestre
-
-En encuestas complejas puede ocurrir que para un mismo `(id_panel, trimestre)` aparezcan **varias filas** (revisitas, actualizaciones).
-
-**Regla de colapso:**
-
--   Dentro de cada grupo `(id_panel, t)`, elegir **la fila con el mayor `mes_cal`**
--   Guardar `n_filas` para diagnóstico
-
-**Intuición:** `mes_cal` funciona como "marca de tiempo" dentro del trimestre. Elegir el máximo es una forma sistemática de conservar la observación "más reciente".
-
-###### Paso 4: Definir estados laborales
-
-Reducimos la clasificación laboral a dos estados:
-
--   **E (empleo):** `clase2` == "1"
--   **U (desempleo):** `clase2` == "2"
--   Otros valores de `clase2` (fuera de fuerza laboral) → `NA` (excluidos)
-
-###### Paso 5: Construir transiciones consecutivas
-
-1.  Ordenar observaciones por `id_panel` y `t`
-2.  Para cada individuo:
-    -   `estado_next` = estado en el siguiente registro (usando `lead()`)
-    -   `t_next` = *t* del siguiente registro
-3.  Filtrar solo pares **consecutivos:** `t_next == t + 1`
-
-###### Paso 6: Calcular tasas de transición (con ponderadores)
-
-**Denominadores** (población que sí tiene observación en *t+1*):
-
--   $E_{\text{denom}}(t)$: total ponderado de individuos en **E** en *t* que aparecen en *t+1*
--   $U_{\text{denom}}(t)$: total ponderado de individuos en **U** en *t* que aparecen en *t+1*
-
-**Numeradores (flujos):**
-
--   $EU(t)$: total ponderado que pasa de **E en t** a **U en t+1**
--   $UE(t)$: total ponderado que pasa de **U en t** a **E en t+1**
-
-**Fracciones (en porcentaje):**
-
-$$
-\text{frac\_EU}(t) = 100 \times \frac{EU(t)}{E_{\text{denom}}(t)}
-$$
-
-$$
-\text{frac\_UE}(t) = 100 \times \frac{UE(t)}{U_{\text{denom}}(t)}
-$$
-
-###### Implementación con Julia (optimización)
-
-Para manejar eficientemente el procesamiento del panel (millones de observaciones), usamos **Julia** vía `JuliaCall`:
+Dado el volumen de observaciones longitudinales, el procesamiento del panel se delega a Julia vía JuliaCall, mientras que el cálculo de las tasas de transición se realiza en R. Los resultados se presentan en la Tabla 5i.
 
 ```{r panel-transiciones, results='hide', message=FALSE}
 # ============================================================================
@@ -1659,7 +1465,6 @@ resultados_5i <- transiciones %>%
   ) %>%
     arrange(anio, trimestre) %>%   select(-anio, -trimestre)
 
-print(resultados_5i)
 
 # --- VERIFICACIÓN DE CONSISTENCIA: MATRIZ 2x2 ---
 check_flows <- transiciones %>%
@@ -1681,40 +1486,40 @@ check_flows <- transiciones %>%
     diff_U = U_denom - (UU + UE),
     .groups="drop"
   ) %>%
-    arrange(anio, trimestre) %>%   select(-anio, -trimestre)
+    arrange(anio, trimestre)
 
-print(check_flows)
 
-# Exportar resultados finales
-write_csv(resultados_5i, 
-          file.path(RUTA_BASE, "resultados_5i_transiciones_EU_UE.csv"))
 ```
 
-##### Resultados del inciso 5i
 
 ```{r tabla-5i}
 # Mostrar tabla de transiciones
+resultados_5i <- resultados_5i %>% select(-E_denom,-U_denom,-EU,-UE)
 kable(resultados_5i, 
       digits = 3,
       caption = "Tabla 5i. Transiciones empleo-desempleo (panel rotativo, 2022-2025)",
-      col.names = c("Periodo", "E denom", "U denom", 
-                    "EU", "UE", "frac_EU (%)", "frac_UE (%)")) %>%
+      col.names = c("Periodo", "frac_EU (%)", "frac_UE (%)")) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
                 full_width = FALSE)
 ```
 
-##### Conclusión
+Los resultados de la \@ref(resultados_5i) confirman el patrón descrito. La tasa $E \rightarrow U$ se mantiene en un rango estrecho de 1.4% a 1.9% a lo largo de todo el período, es decir se observa estabilidad en la frecuencia de pérdida de empleo. El valor más bajo se registra en 2024Q4 (1.409%) y el más alto en 2022Q2 (1.866%).
 
-Los resultados muestran un mercado laboral con dinámicas asimétricas entre los flujos de entrada y salida del desempleo. La tasa de transición de empleo a desempleo ($E \rightarrow U$) es reducida y estable a lo largo del período analizado, oscilando entre 1.4% y 1.9% por trimestre, lo que sugiere que la pérdida de empleo —medida como paso al desempleo— es un evento poco frecuente en el contexto mexicano.
+La tasa $U \rightarrow E$, por su parte, oscila entre 72.1% y 78.9%, con 2025Q1 registrando el valor más alto de la muestra. No se observa un deterioro en la capacidad de reempleo a lo largo del período, lo que sugiere que el mercado laboral absorbió sin fricciones apreciables los vaivenes macroeconómicos de 2022–2025. Vale notar que el denominador del flujo $U \rightarrow E$ —la población desempleada reentrevistada en $t+1$— ronda los 750,000–990,000 personas ponderadas, volumen modesto frente a los 36–38 millones de ocupados, lo que es en sí mismo una expresión de la baja desocupación estructural del país.
 
-Por su parte, la tasa de transición de desempleo a empleo ($U \rightarrow E$) es notablemente elevada, situándose entre 72% y 79% por trimestre, lo que implica que el desempleo tiende a ser transitorio: la gran mayoría de los individuos desempleados en un trimestre dado aparecen empleados en el período siguiente.
-
-Este patrón es consistente con el hecho observable que en el mercado laboral mexicano: la desocupación es estructuralmente baja en parte porque los trabajadores no pueden sostener períodos prolongados de búsqueda y se reincorporan rápidamente al mercado, frecuentemente a través de empleos informales.
-
-En consecuencia, el ajuste ante shocks laborales no necesariamente se manifiesta en mayor desempleo, sino en otros márgenes como el deterioro de la calidad del empleo, el aumento de la informalidad, la reducción de horas trabajadas o la salida temporal de la fuerza laboral.
-
-Para 2025Q1, la probabilidad trimestral de pérdida de empleo se mantiene baja (aproximadamente 1.47%) y la probabilidad de reempleo alcanza 78.9%, uno de los valores más altos de la muestra, sin que se observe un deterioro apreciable en ninguno de los dos márgenes. *No obstante, es importante señalar que estas tasas están sujetas a dos restricciones metodológicas que condicionan su interpretación.* En primer lugar, se calculan sobre los individuos que permanecen en el panel entre trimestres consecutivos, lo que puede introducir un sesgo de selección si los desempleados que reaparecen en $t+1$ son precisamente aquellos con mayor probabilidad de reempleo. En segundo lugar, solo capturan transiciones entre los estados de empleo y desempleo, excluyendo los flujos hacia y desde la inactividad, por lo que pueden subestimar la magnitud real del ajuste laboral agregado.
 
 #### 9. Identifique una pregunta adicional de cuestionario de la ENOE, grafique la proporción de las respuestas que son de cada posibilidad, e interprete.
 
 \textcolor{blue}{Respuesta}\
+
+
+
+
+
+
+
+
+
+
+
+

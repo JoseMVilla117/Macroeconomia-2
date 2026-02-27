@@ -611,7 +611,7 @@ vars_clave <- c(
   "fac_tri",     # Factor de expansión trimestral (PONDERADOR)
   "ingocup",     # Ingreso por ocupación principal
   "busqueda",    # Búsqueda de otro empleo (1=Sí busca)
-  
+  "ing_x_hrs", # Promedio de ingreso por hora trabajada
   # ---- UNIDAD ECONÓMICA / EMPRESA (COE1T) ----
   "ambito2",     # Ámbito/tamaño de la unidad económica (2-3=Micro, 4=Pequeña, 5=Mediana, 6=Grande, 7=Gobierno)
   "p4a",         # Pregunta auxiliar sobre el giro de la empresa
@@ -1171,8 +1171,7 @@ kable(.buscando_empleo,
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
                 full_width = FALSE)
 
-# Exportar
-write_csv(buscando_empleo, file.path(RUTA_BASE, "resultados_5f_buscando_empleo.csv"))
+
 ```
 
 #### 7. Grafique la relación entre el **ingreso promedio** y la **edad** de los trabajadores.
@@ -1247,7 +1246,7 @@ kable(ingreso_edad_positivo,
 ```
 
 
-```{r, fig.width=7, fig.height=4, out.width="85%", fig.align="center"}
+```{r Mil graficas, fig.width=7, fig.height=4, out.width="85%", fig.align="center", dev="png", dpi=150}
 # LAS MIL GRAFICAS 
 config <- list(
   list(anio = 2022, color = "#520025", num = 1),
